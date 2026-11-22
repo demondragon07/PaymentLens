@@ -8,3 +8,6 @@ data/*.duckdb.wal
 .claude
 docs/*.pdf
 docs/video/
+docs/build_pdf1.py
+docs/build_pdf2.py
+docs/pdfkit.py
