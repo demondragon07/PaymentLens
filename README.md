@@ -122,8 +122,8 @@ flowchart LR
 **Requirements:** Python 3.11+ (developed on 3.13).
 
 ```bash
-git clone <your-repo-url> paymentlens
-cd paymentlens
+git clone https://github.com/demondragon07/PaymentLens.git
+cd PaymentLens
 
 python -m venv .venv
 # Windows
