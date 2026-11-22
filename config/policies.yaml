@@ -1,0 +1,26 @@
+# Who can see what. Roles are simulated (there is no real login).
+# restricted_columns: these columns are blocked in every query.
+# row_scope: limits a role to some rows by adding a filter to every table (see security/policy.py).
+roles:
+  admin:
+    label: Admin (full access)
+    restricted_columns: []
+    row_scope: null
+    explore_mode: true
+  business_analyst:
+    label: Business Analyst
+    restricted_columns: [settlement_account, contact_email]
+    row_scope: null
+    explore_mode: true
+  regional_analyst_north:
+    label: Regional Analyst (North only)
+    restricted_columns: [settlement_account, contact_email]
+    row_scope: {column: region, value: North}
+    explore_mode: true
+
+# how a row scope is applied to each table
+scope_rules:
+  transactions: "SELECT * FROM transactions WHERE region = '{value}'"
+  transactions_raw: "SELECT * FROM transactions_raw WHERE region = '{value}'"
+  merchants: "SELECT * FROM merchants WHERE region = '{value}'"
+  settlements: "SELECT * FROM settlements WHERE merchant_id IN (SELECT merchant_id FROM merchants WHERE region = '{value}')"

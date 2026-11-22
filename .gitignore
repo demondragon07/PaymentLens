@@ -1,0 +1,10 @@
+.env
+.venv/
+__pycache__/
+.pytest_cache/
+logs/
+data/*.duckdb
+data/*.duckdb.wal
+.claude
+docs/*.pdf
+docs/video/

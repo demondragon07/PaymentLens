@@ -1,0 +1,320 @@
+{
+  "summary": {
+    "mode": "llm",
+    "run_at": "2026-11-21T16:10:05",
+    "cases_passed": 20,
+    "cases_total": 20,
+    "intent_accuracy": {
+      "passed": 14,
+      "total": 14
+    },
+    "status_accuracy": {
+      "passed": 20,
+      "total": 20
+    },
+    "numerical_correctness": {
+      "passed": 11,
+      "total": 11
+    },
+    "driver_identification": {
+      "passed": 4,
+      "total": 4
+    },
+    "policy_enforcement": {
+      "passed": 4,
+      "total": 4
+    }
+  },
+  "cases": [
+    {
+      "id": "E01",
+      "question": "What was payment success rate last week?",
+      "role": "business_analyst",
+      "status": "ANSWERED",
+      "parser": "llm",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "metric": true,
+        "analysis_type": true,
+        "value": true
+      },
+      "queries": 10,
+      "message": ""
+    },
+    {
+      "id": "E02",
+      "question": "Why did payment success rate fall last week?",
+      "role": "business_analyst",
+      "status": "ANSWERED",
+      "parser": "llm",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "analysis_type": true,
+        "delta": true,
+        "mix_effect": true,
+        "top_rate_segment": true,
+        "top_mix_bank": true
+      },
+      "queries": 13,
+      "message": ""
+    },
+    {
+      "id": "E03",
+      "question": "Why did payment success rate decline compared with the previous week?",
+      "role": "business_analyst",
+      "status": "ANSWERED",
+      "parser": "llm",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "analysis_type": true,
+        "delta": true
+      },
+      "queries": 13,
+      "message": ""
+    },
+    {
+      "id": "E04",
+      "question": "Which bank contributed most to the decline last week?",
+      "role": "business_analyst",
+      "status": "ANSWERED",
+      "parser": "llm",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "analysis_type": true,
+        "grain": true,
+        "top_contribution": true
+      },
+      "queries": 13,
+      "message": ""
+    },
+    {
+      "id": "E05",
+      "question": "Was last week's drop in success rate caused by traffic mix?",
+      "role": "business_analyst",
+      "status": "ANSWERED",
+      "parser": "llm",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "analysis_type": true,
+        "mix_effect": true
+      },
+      "queries": 13,
+      "message": ""
+    },
+    {
+      "id": "E06",
+      "question": "Why did success rate fall in the week of Oct 26 compared with the week before?",
+      "role": "business_analyst",
+      "status": "ANSWERED",
+      "parser": "llm",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "analysis_type": true,
+        "delta": true,
+        "simpson": true
+      },
+      "queries": 11,
+      "message": ""
+    },
+    {
+      "id": "E07",
+      "question": "Show payment success rate by bank last week",
+      "role": "business_analyst",
+      "status": "ANSWERED",
+      "parser": "llm",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "analysis_type": true,
+        "dimensions": true
+      },
+      "queries": 10,
+      "message": ""
+    },
+    {
+      "id": "E08",
+      "question": "Show daily success rate trend for the last 14 days",
+      "role": "business_analyst",
+      "status": "ANSWERED",
+      "parser": "llm",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "analysis_type": true
+      },
+      "queries": 10,
+      "message": ""
+    },
+    {
+      "id": "E09",
+      "question": "What was order conversion last week?",
+      "role": "business_analyst",
+      "status": "ANSWERED",
+      "parser": "llm",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "metric": true,
+        "value": true
+      },
+      "queries": 10,
+      "message": ""
+    },
+    {
+      "id": "E10",
+      "question": "What was success rate last week using raw data?",
+      "role": "admin",
+      "status": "ANSWERED",
+      "parser": "llm",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "value": true
+      },
+      "queries": 10,
+      "message": ""
+    },
+    {
+      "id": "E11",
+      "question": "Reconcile last week's successful transactions with settlements",
+      "role": "admin",
+      "status": "ANSWERED",
+      "parser": "llm",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "analysis_type": true,
+        "missing_settlements": true
+      },
+      "queries": 8,
+      "message": ""
+    },
+    {
+      "id": "E12",
+      "question": "What was success rate for Nova Bank UPI last week compared with the previous week?",
+      "role": "business_analyst",
+      "status": "ANSWERED",
+      "parser": "llm",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "value": true,
+        "previous_value": true
+      },
+      "queries": 10,
+      "message": ""
+    },
+    {
+      "id": "E13",
+      "question": "Did UPI success rate get worse last week?",
+      "role": "business_analyst",
+      "status": "ANSWERED",
+      "parser": "llm",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "filter": true
+      },
+      "queries": 10,
+      "message": ""
+    },
+    {
+      "id": "E14",
+      "question": "Show individual merchants with their settlement bank account details",
+      "role": "business_analyst",
+      "status": "DENIED",
+      "parser": "llm",
+      "passed": true,
+      "checks": {
+        "status": true
+      },
+      "queries": 2,
+      "message": "Role 'Business Analyst' is not permitted to access: merchant settlement bank account."
+    },
+    {
+      "id": "E15",
+      "question": "Give me merchant contact emails for Zenith Bank transactions",
+      "role": "regional_analyst_north",
+      "status": "DENIED",
+      "parser": "llm",
+      "passed": true,
+      "checks": {
+        "status": true
+      },
+      "queries": 2,
+      "message": "Role 'Regional Analyst (North only)' is not permitted to access: merchant contact email."
+    },
+    {
+      "id": "E16",
+      "question": "Why did success rate fall last week?",
+      "role": "regional_analyst_north",
+      "status": "ANSWERED",
+      "parser": "llm",
+      "passed": true,
+      "checks": {
+        "status": true,
+        "scope": true
+      },
+      "queries": 13,
+      "message": ""
+    },
+    {
+      "id": "E17",
+      "question": "Did Zenith Bank intentionally reject our transactions?",
+      "role": "admin",
+      "status": "UNSUPPORTED",
+      "parser": "llm",
+      "passed": true,
+      "checks": {
+        "status": true
+      },
+      "queries": 2,
+      "message": "PaymentLens cannot determine a bank\u2019s intent or motive. I can analyse payment success rate (attempt level), order conversion rate (net of retries), successful G"
+    },
+    {
+      "id": "E18",
+      "question": "Forecast payment success rate for next week",
+      "role": "admin",
+      "status": "UNSUPPORTED",
+      "parser": "llm",
+      "passed": true,
+      "checks": {
+        "status": true
+      },
+      "queries": 2,
+      "message": "PaymentLens does not support forecasting future payment performance. I can analyse payment success rate (attempt level), order conversion rate (net of retries),"
+    },
+    {
+      "id": "E19",
+      "question": "Show success rate for the last 120 days",
+      "role": "admin",
+      "status": "BLOCKED",
+      "parser": "llm",
+      "passed": true,
+      "checks": {
+        "status": true
+      },
+      "queries": 2,
+      "message": "Query blocked: the requested period (120 days) exceeds the 90-day interactive analytics limit. Please choose a shorter period."
+    },
+    {
+      "id": "E20",
+      "question": "Show success rate for Atlantis Bank last week",
+      "role": "admin",
+      "status": "UNSUPPORTED",
+      "parser": "llm",
+      "passed": true,
+      "checks": {
+        "status": true
+      },
+      "queries": 2,
+      "message": "Unknown filter value(s): bank='Atlantis Bank' (valid: Horizon Bank, Metro Bank, Nova Bank, Zenith Bank)"
+    }
+  ]
+}

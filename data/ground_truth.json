@@ -1,0 +1,187 @@
+{
+  "description": "Ground truth computed by data/generate_data.py with pandas (independent of app code).",
+  "data_as_of": "2026-11-16 06:00:00",
+  "planted": {
+    "zenith_share_by_week": {
+      "W1": 0.12,
+      "W2": 0.28,
+      "W3": 0.12,
+      "W4": 0.26
+    },
+    "w2_segment_uplift": 0.008,
+    "nova_upi_outage_days": [
+      "2026-11-11",
+      "2026-11-12",
+      "2026-11-13",
+      "2026-11-14"
+    ],
+    "nova_upi_outage_rate": 0.7,
+    "anomalies": {
+      "duplicate_rows": 500,
+      "missing_bank_ids": 250,
+      "future_timestamps": 20,
+      "invalid_statuses": 10
+    },
+    "settlements": {
+      "missing_settlement_records": 77,
+      "amount_mismatches": 40
+    }
+  },
+  "weeks": {
+    "W1": [
+      "2026-10-19",
+      "2026-10-25"
+    ],
+    "W2": [
+      "2026-10-26",
+      "2026-11-01"
+    ],
+    "W3": [
+      "2026-11-02",
+      "2026-11-08"
+    ],
+    "W4": [
+      "2026-11-09",
+      "2026-11-15"
+    ]
+  },
+  "weekly_success_rate": {
+    "W1": {
+      "successes": 19697,
+      "attempts": 21853,
+      "rate": 0.9013407770100215
+    },
+    "W2": {
+      "successes": 19436,
+      "attempts": 21833,
+      "rate": 0.8902120643063253
+    },
+    "W3": {
+      "successes": 19862,
+      "attempts": 21976,
+      "rate": 0.9038041499817984
+    },
+    "W4": {
+      "successes": 19403,
+      "attempts": 22213,
+      "rate": 0.8734975014631072
+    }
+  },
+  "weekly_order_conversion": {
+    "W1": 0.9310801229023872,
+    "W2": 0.9231499952503087,
+    "W3": 0.9352985496326992,
+    "W4": 0.9119665350629818
+  },
+  "w4_raw_success_rate": {
+    "successes": 19403,
+    "attempts": 22713,
+    "rate": 0.8542684806058205
+  },
+  "w4_vs_w3_bank_x_method": {
+    "R0": 0.9038041499817984,
+    "R1": 0.8734975014631072,
+    "delta": -0.030306648518691137,
+    "rate_effect": -0.01446373305539469,
+    "mix_effect": -0.01584291546329646,
+    "counterfactual_rate": 0.887965970228323,
+    "top_negative_rate_segment": "Nova Bank | UPI",
+    "top_negative_rate_effect": -0.012794344699189742,
+    "top_negative_mix_segment": "Zenith Bank | CARD",
+    "top_negative_mix_effect": -0.0045635333619430665,
+    "top_negative_contribution_segment": "Nova Bank | UPI"
+  },
+  "w4_vs_w3_bank": {
+    "R0": 0.9038041499817984,
+    "R1": 0.8734975014631072,
+    "delta": -0.030306648518691137,
+    "rate_effect": -0.014778664823757639,
+    "mix_effect": -0.015527983694933484,
+    "counterfactual_rate": 0.8875535271964352,
+    "top_negative_rate_segment": "Nova Bank",
+    "top_negative_rate_effect": -0.01500486723154772,
+    "top_negative_mix_segment": "Zenith Bank",
+    "top_negative_mix_effect": -0.0123558721077095,
+    "top_negative_contribution_segment": "Nova Bank"
+  },
+  "w2_vs_w1_bank": {
+    "R0": 0.9013407770100215,
+    "R1": 0.8902120643063253,
+    "delta": -0.011128712703696197,
+    "rate_effect": 0.00965341364509509,
+    "mix_effect": -0.02078212634879127,
+    "counterfactual_rate": 0.910985864697062,
+    "top_negative_rate_segment": "Zenith Bank",
+    "top_negative_rate_effect": 0.0019990040395822823,
+    "top_negative_mix_segment": "Zenith Bank",
+    "top_negative_mix_effect": -0.016619588314611678,
+    "top_negative_contribution_segment": "Zenith Bank"
+  },
+  "w1_bank_rates": {
+    "Horizon Bank": 0.9088577033348423,
+    "Metro Bank": 0.9323503902862099,
+    "Nova Bank": 0.903158262083406,
+    "Zenith Bank": 0.7947225455956538
+  },
+  "w2_bank_rates": {
+    "Horizon Bank": 0.9199923983276321,
+    "Metro Bank": 0.9404677533664068,
+    "Nova Bank": 0.9128630705394191,
+    "Zenith Bank": 0.8045053560176434
+  },
+  "bank_share": {
+    "W3": {
+      "Metro Bank": 0.31557153258099746,
+      "Horizon Bank": 0.30000910083727705,
+      "Nova Bank": 0.2576447033127048,
+      "Zenith Bank": 0.12213323625773571,
+      "UNKNOWN": 0.004641427011285038
+    },
+    "W4": {
+      "Zenith Bank": 0.2653401161482015,
+      "Metro Bank": 0.25732679061810654,
+      "Horizon Bank": 0.2523297168324855,
+      "Nova Bank": 0.21852068608472516,
+      "UNKNOWN": 0.0064826903164813396
+    }
+  },
+  "nova_upi": {
+    "W3": {
+      "successes": 2338,
+      "attempts": 2555,
+      "rate": 0.915068493150685
+    },
+    "W4": {
+      "successes": 1790,
+      "attempts": 2245,
+      "rate": 0.7973273942093542
+    },
+    "w4_top_decline_reason": "ISSUER_UNAVAILABLE",
+    "w4_decline_reason_counts": {
+      "ISSUER_UNAVAILABLE": 301,
+      "INSUFFICIENT_FUNDS": 64,
+      "AUTHENTICATION_FAILED": 43,
+      "SUSPECTED_FRAUD": 26,
+      "TIMEOUT": 21
+    }
+  },
+  "data_quality": {
+    "duplicate_extra_rows": 500,
+    "missing_bank_id_rows": 250,
+    "future_timestamp_rows": 20,
+    "invalid_status_rows": 10,
+    "partial_day": {
+      "date": "2026-11-16",
+      "successes": 235,
+      "attempts": 272,
+      "rate": 0.8639705882352942
+    }
+  },
+  "row_counts": {
+    "transactions_raw": 91378,
+    "transactions_trusted": 90848,
+    "merchants": 100,
+    "banks": 4,
+    "settlements": 78321
+  }
+}

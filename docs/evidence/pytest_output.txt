@@ -1,0 +1,58 @@
+============================= test session starts =============================
+platform win32 -- Python 3.13.9, pytest-9.2.0, pluggy-1.7.0 -- D:\Pine_Labs- Case Study\paymentlens\.venv\Scripts\python.exe
+rootdir: D:\Pine_Labs- Case Study\paymentlens
+configfile: pytest.ini
+testpaths: tests
+plugins: anyio-4.16.0
+collecting ... collected 48 items
+
+tests/test_ai_layer.py::test_fallback_when_no_key PASSED                 [  2%]
+tests/test_ai_layer.py::test_fallback_when_llm_errors PASSED             [  4%]
+tests/test_ai_layer.py::test_sensitive_request_cannot_be_hidden_by_llm PASSED [  6%]
+tests/test_ai_layer.py::test_llm_missing_metric_gets_default PASSED      [  8%]
+tests/test_ai_layer.py::test_grounding_accepts_faithful_text PASSED      [ 10%]
+tests/test_ai_layer.py::test_grounding_rejects_invented_number_and_bad_citation PASSED [ 12%]
+tests/test_ai_layer.py::test_narrator_falls_back_to_template_on_bad_llm_output PASSED [ 14%]
+tests/test_eval.py::test_known_answer_eval_offline PASSED                [ 16%]
+tests/test_ground_truth.py::test_weekly_success_rate PASSED              [ 18%]
+tests/test_ground_truth.py::test_root_cause_w4_vs_w3 PASSED              [ 20%]
+tests/test_ground_truth.py::test_simpson_w2_vs_w1 PASSED                 [ 22%]
+tests/test_ground_truth.py::test_raw_vs_trusted_and_dq_counts PASSED     [ 25%]
+tests/test_ground_truth.py::test_order_conversion PASSED                 [ 27%]
+tests/test_ground_truth.py::test_reconciliation PASSED                   [ 29%]
+tests/test_ground_truth.py::test_segment_filter PASSED                   [ 31%]
+tests/test_ground_truth.py::test_access_denied_and_scope PASSED          [ 33%]
+tests/test_ground_truth.py::test_root_cause_not_blocked_when_parser_lists_all_dimensions PASSED [ 35%]
+tests/test_ground_truth.py::test_budget_and_unsupported PASSED           [ 37%]
+tests/test_math.py::test_pure_mix_shift_example PASSED                   [ 39%]
+tests/test_math.py::test_mix_and_rate_example_reconciles PASSED          [ 41%]
+tests/test_math.py::test_segment_missing_in_one_period PASSED            [ 43%]
+tests/test_math.py::test_simpson_detected_when_all_segments_improve PASSED [ 45%]
+tests/test_math.py::test_wilson_and_ztest_known_values PASSED            [ 47%]
+tests/test_sql_guard.py::test_malicious_sql_blocked[DROP TABLE transactions] PASSED [ 50%]
+tests/test_sql_guard.py::test_malicious_sql_blocked[DELETE FROM banks] PASSED [ 52%]
+tests/test_sql_guard.py::test_malicious_sql_blocked[UPDATE banks SET bank_name = 'x'] PASSED [ 54%]
+tests/test_sql_guard.py::test_malicious_sql_blocked[INSERT INTO banks VALUES ('B9','x','y')] PASSED [ 56%]
+tests/test_sql_guard.py::test_malicious_sql_blocked[CREATE TABLE x AS SELECT 1] PASSED [ 58%]
+tests/test_sql_guard.py::test_malicious_sql_blocked[SELECT 1; DELETE FROM banks] PASSED [ 60%]
+tests/test_sql_guard.py::test_malicious_sql_blocked[COPY banks TO 'out.csv'] PASSED [ 62%]
+tests/test_sql_guard.py::test_malicious_sql_blocked[ATTACH 'other.db'] PASSED [ 64%]
+tests/test_sql_guard.py::test_malicious_sql_blocked[INSTALL httpfs] PASSED [ 66%]
+tests/test_sql_guard.py::test_malicious_sql_blocked[PRAGMA database_list] PASSED [ 68%]
+tests/test_sql_guard.py::test_malicious_sql_blocked[SELECT * FROM read_csv('C:/secrets.csv')] PASSED [ 70%]
+tests/test_sql_guard.py::test_malicious_sql_blocked[SELECT getenv('OPENAI_API_KEY')] PASSED [ 72%]
+tests/test_sql_guard.py::test_malicious_sql_blocked[SELECT * FROM duckdb_settings()] PASSED [ 75%]
+tests/test_sql_guard.py::test_malicious_sql_blocked[SELECT * FROM meta] PASSED [ 77%]
+tests/test_sql_guard.py::test_malicious_sql_blocked[SELECT * FROM main.transactions] PASSED [ 79%]
+tests/test_sql_guard.py::test_malicious_sql_blocked[SELECT t.txn_id FROM transactions t, banks b] PASSED [ 81%]
+tests/test_sql_guard.py::test_malicious_sql_blocked[SELECT nonexistent_col FROM transactions] PASSED [ 83%]
+tests/test_sql_guard.py::test_safe_join_allowed PASSED                   [ 85%]
+tests/test_sql_guard.py::test_restricted_columns_blocked_for_analyst[SELECT merchant_id, settlement_account FROM merchants] PASSED [ 87%]
+tests/test_sql_guard.py::test_restricted_columns_blocked_for_analyst[SELECT contact_email FROM merchants] PASSED [ 89%]
+tests/test_sql_guard.py::test_restricted_columns_blocked_for_analyst[SELECT * FROM merchants] PASSED [ 91%]
+tests/test_sql_guard.py::test_restricted_columns_allowed_for_admin PASSED [ 93%]
+tests/test_sql_guard.py::test_row_scope_rewrite_limits_regional_analyst PASSED [ 95%]
+tests/test_sql_guard.py::test_row_scope_applies_to_settlements PASSED    [ 97%]
+tests/test_sql_guard.py::test_engine_is_read_only_even_without_guard PASSED [100%]
+
+============================= 48 passed in 7.34s ==============================

@@ -1,0 +1,239 @@
+{
+  "question": "Show success rate for the last 120 days",
+  "role": "admin",
+  "status": "BLOCKED",
+  "message": "Query blocked: the requested period (120 days) exceeds the 90-day interactive analytics limit. Please choose a shorter period.",
+  "parser": "rules",
+  "parser_notes": [],
+  "intent": {
+    "is_supported": true,
+    "unsupported_reason": null,
+    "metric": "payment_success_rate",
+    "metric_explicit": false,
+    "analysis_type": "summary",
+    "current_period": {
+      "kind": "last_n_days",
+      "n_days": 120,
+      "start": null,
+      "end": null
+    },
+    "comparison": "none",
+    "comparison_period": null,
+    "dimensions": [],
+    "filters": [],
+    "data_source": "trusted",
+    "requested_attributes": [],
+    "ambiguities": [
+      "'Success rate' could be attempt-level (each retry counted) or order-level (net of retries); used attempt-level Payment Success Rate."
+    ]
+  },
+  "resolved": null,
+  "policy": {
+    "status": "ALLOWED",
+    "reasons": [],
+    "notices": [],
+    "allowed_scope": [
+      "Aggregated payment performance (success rate, conversion, GMV, volume)",
+      "Breakdowns by bank, payment method, merchant category, region, merchant ID, decline reason"
+    ],
+    "alternative": null,
+    "scoped_filters": {}
+  },
+  "queries": [
+    {
+      "id": "Q1",
+      "purpose": "Data quality: freshness (daily volume of latest days)",
+      "status": "OK",
+      "rows": 8,
+      "ms": 0.0,
+      "cache_hit": true,
+      "tables": [
+        "transactions"
+      ],
+      "sql": "SELECT CAST(t.created_at AS DATE) AS day, COUNT(*) AS attempts\nFROM transactions AS t\nWHERE t.created_at <= TIMESTAMP '2026-11-16 06:00:00'\nGROUP BY 1\nORDER BY 1 DESC\nLIMIT 8",
+      "executed_sql": "SELECT CAST(t.created_at AS DATE) AS day, COUNT(*) AS attempts\nFROM transactions AS t\nWHERE t.created_at <= TIMESTAMP '2026-11-16 06:00:00'\nGROUP BY 1\nORDER BY 1 DESC\nLIMIT 8",
+      "checks": [
+        {
+          "check": "parse",
+          "passed": true,
+          "detail": "Parsed with sqlglot (duckdb dialect)"
+        },
+        {
+          "check": "single_statement",
+          "passed": true,
+          "detail": "Exactly one statement required (found 1)"
+        },
+        {
+          "check": "read_only_statement",
+          "passed": true,
+          "detail": "Statement is a SELECT"
+        },
+        {
+          "check": "no_forbidden_commands",
+          "passed": true,
+          "detail": "No DDL/DML/COPY/ATTACH/PRAGMA/INSTALL"
+        },
+        {
+          "check": "no_forbidden_functions",
+          "passed": true,
+          "detail": "No file/system/settings functions"
+        },
+        {
+          "check": "allowed_tables",
+          "passed": true,
+          "detail": "Tables allowed: transactions"
+        },
+        {
+          "check": "no_qualified_names",
+          "passed": true,
+          "detail": "No schema/catalog qualifiers"
+        },
+        {
+          "check": "known_columns",
+          "passed": true,
+          "detail": "All columns exist in the allowed schema"
+        },
+        {
+          "check": "restricted_columns",
+          "passed": true,
+          "detail": "No restricted columns referenced"
+        },
+        {
+          "check": "no_star_on_sensitive_table",
+          "passed": true,
+          "detail": "No wildcard over sensitive tables"
+        },
+        {
+          "check": "join_conditions",
+          "passed": true,
+          "detail": "Every join has a condition"
+        },
+        {
+          "check": "join_count",
+          "passed": true,
+          "detail": "0 join(s)"
+        }
+      ]
+    },
+    {
+      "id": "Q2",
+      "purpose": "Data quality: first day of data",
+      "status": "OK",
+      "rows": 1,
+      "ms": 0.0,
+      "cache_hit": true,
+      "tables": [
+        "transactions"
+      ],
+      "sql": "SELECT CAST(MIN(t.created_at) AS DATE) AS first_day FROM transactions AS t",
+      "executed_sql": "SELECT CAST(MIN(t.created_at) AS DATE) AS first_day FROM transactions AS t",
+      "checks": [
+        {
+          "check": "parse",
+          "passed": true,
+          "detail": "Parsed with sqlglot (duckdb dialect)"
+        },
+        {
+          "check": "single_statement",
+          "passed": true,
+          "detail": "Exactly one statement required (found 1)"
+        },
+        {
+          "check": "read_only_statement",
+          "passed": true,
+          "detail": "Statement is a SELECT"
+        },
+        {
+          "check": "no_forbidden_commands",
+          "passed": true,
+          "detail": "No DDL/DML/COPY/ATTACH/PRAGMA/INSTALL"
+        },
+        {
+          "check": "no_forbidden_functions",
+          "passed": true,
+          "detail": "No file/system/settings functions"
+        },
+        {
+          "check": "allowed_tables",
+          "passed": true,
+          "detail": "Tables allowed: transactions"
+        },
+        {
+          "check": "no_qualified_names",
+          "passed": true,
+          "detail": "No schema/catalog qualifiers"
+        },
+        {
+          "check": "known_columns",
+          "passed": true,
+          "detail": "All columns exist in the allowed schema"
+        },
+        {
+          "check": "restricted_columns",
+          "passed": true,
+          "detail": "No restricted columns referenced"
+        },
+        {
+          "check": "no_star_on_sensitive_table",
+          "passed": true,
+          "detail": "No wildcard over sensitive tables"
+        },
+        {
+          "check": "join_conditions",
+          "passed": true,
+          "detail": "Every join has a condition"
+        },
+        {
+          "check": "join_count",
+          "passed": true,
+          "detail": "0 join(s)"
+        }
+      ]
+    }
+  ],
+  "facts": [],
+  "narrative": null,
+  "confidence": {},
+  "dq": {},
+  "trace": [
+    {
+      "step": "Check data freshness",
+      "component": "analytics/data_quality.py::freshness",
+      "detail": "last day 2026-11-16 partial=True; last complete 2026-11-15",
+      "elapsed_ms": 3.4
+    },
+    {
+      "step": "Understand question",
+      "component": "ai/intent_parser.py::parse_question",
+      "detail": "parser=rules; metric=payment_success_rate; analysis=summary; dims=[]",
+      "elapsed_ms": 0.7
+    },
+    {
+      "step": "Validate filter values",
+      "component": "core/pipeline.py::_canonical_filters",
+      "detail": "filters={} unknown=[]",
+      "elapsed_ms": 0.0
+    },
+    {
+      "step": "Check access policy",
+      "component": "security/policy.py::check_intent",
+      "detail": "ALLOWED []",
+      "elapsed_ms": 0.0
+    }
+  ],
+  "analysis": {
+    "metric_label": null,
+    "kind": null,
+    "overall": null,
+    "decomposition": null,
+    "drivers": null,
+    "simpson": null,
+    "drilldown": null,
+    "reconciliation": null,
+    "grain": null,
+    "trend_summary": null,
+    "breakdown_top": null,
+    "llm_meta": {},
+    "bank_view": null
+  }
+}

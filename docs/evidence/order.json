@@ -1,0 +1,1016 @@
+{
+  "question": "What was order conversion last week?",
+  "role": "business_analyst",
+  "status": "ANSWERED",
+  "message": "",
+  "parser": "rules",
+  "parser_notes": [],
+  "intent": {
+    "is_supported": true,
+    "unsupported_reason": null,
+    "metric": "order_conversion_rate",
+    "metric_explicit": true,
+    "analysis_type": "summary",
+    "current_period": {
+      "kind": "last_full_week",
+      "n_days": null,
+      "start": null,
+      "end": null
+    },
+    "comparison": "none",
+    "comparison_period": null,
+    "dimensions": [],
+    "filters": [],
+    "data_source": "trusted",
+    "requested_attributes": [],
+    "ambiguities": [
+      "'Last week' could mean the last calendar week (Mon-Sun) or the last 7 days."
+    ]
+  },
+  "resolved": {
+    "metric": "order_conversion_rate",
+    "analysis_type": "summary",
+    "current": "09 Nov 2026 - 15 Nov 2026",
+    "previous": null,
+    "filters": {},
+    "dimensions": [],
+    "source": "transactions",
+    "assumptions": [
+      "'Last week' = last full calendar week Mon-Sun (09 Nov - 15 Nov) - identical to the last 7 complete days here.",
+      "16 Nov is partially loaded and excluded from relative periods."
+    ],
+    "notices": []
+  },
+  "policy": {
+    "status": "ALLOWED",
+    "reasons": [],
+    "notices": [],
+    "allowed_scope": [
+      "Aggregated payment performance (success rate, conversion, GMV, volume)",
+      "Breakdowns by bank, payment method, merchant category, region, merchant ID, decline reason"
+    ],
+    "alternative": null,
+    "scoped_filters": {}
+  },
+  "queries": [
+    {
+      "id": "Q1",
+      "purpose": "Data quality: freshness (daily volume of latest days)",
+      "status": "OK",
+      "rows": 8,
+      "ms": 0.0,
+      "cache_hit": true,
+      "tables": [
+        "transactions"
+      ],
+      "sql": "SELECT CAST(t.created_at AS DATE) AS day, COUNT(*) AS attempts\nFROM transactions AS t\nWHERE t.created_at <= TIMESTAMP '2026-11-16 06:00:00'\nGROUP BY 1\nORDER BY 1 DESC\nLIMIT 8",
+      "executed_sql": "SELECT CAST(t.created_at AS DATE) AS day, COUNT(*) AS attempts\nFROM transactions AS t\nWHERE t.created_at <= TIMESTAMP '2026-11-16 06:00:00'\nGROUP BY 1\nORDER BY 1 DESC\nLIMIT 8",
+      "checks": [
+        {
+          "check": "parse",
+          "passed": true,
+          "detail": "Parsed with sqlglot (duckdb dialect)"
+        },
+        {
+          "check": "single_statement",
+          "passed": true,
+          "detail": "Exactly one statement required (found 1)"
+        },
+        {
+          "check": "read_only_statement",
+          "passed": true,
+          "detail": "Statement is a SELECT"
+        },
+        {
+          "check": "no_forbidden_commands",
+          "passed": true,
+          "detail": "No DDL/DML/COPY/ATTACH/PRAGMA/INSTALL"
+        },
+        {
+          "check": "no_forbidden_functions",
+          "passed": true,
+          "detail": "No file/system/settings functions"
+        },
+        {
+          "check": "allowed_tables",
+          "passed": true,
+          "detail": "Tables allowed: transactions"
+        },
+        {
+          "check": "no_qualified_names",
+          "passed": true,
+          "detail": "No schema/catalog qualifiers"
+        },
+        {
+          "check": "known_columns",
+          "passed": true,
+          "detail": "All columns exist in the allowed schema"
+        },
+        {
+          "check": "restricted_columns",
+          "passed": true,
+          "detail": "No restricted columns referenced"
+        },
+        {
+          "check": "no_star_on_sensitive_table",
+          "passed": true,
+          "detail": "No wildcard over sensitive tables"
+        },
+        {
+          "check": "join_conditions",
+          "passed": true,
+          "detail": "Every join has a condition"
+        },
+        {
+          "check": "join_count",
+          "passed": true,
+          "detail": "0 join(s)"
+        }
+      ]
+    },
+    {
+      "id": "Q2",
+      "purpose": "Data quality: first day of data",
+      "status": "OK",
+      "rows": 1,
+      "ms": 0.0,
+      "cache_hit": true,
+      "tables": [
+        "transactions"
+      ],
+      "sql": "SELECT CAST(MIN(t.created_at) AS DATE) AS first_day FROM transactions AS t",
+      "executed_sql": "SELECT CAST(MIN(t.created_at) AS DATE) AS first_day FROM transactions AS t",
+      "checks": [
+        {
+          "check": "parse",
+          "passed": true,
+          "detail": "Parsed with sqlglot (duckdb dialect)"
+        },
+        {
+          "check": "single_statement",
+          "passed": true,
+          "detail": "Exactly one statement required (found 1)"
+        },
+        {
+          "check": "read_only_statement",
+          "passed": true,
+          "detail": "Statement is a SELECT"
+        },
+        {
+          "check": "no_forbidden_commands",
+          "passed": true,
+          "detail": "No DDL/DML/COPY/ATTACH/PRAGMA/INSTALL"
+        },
+        {
+          "check": "no_forbidden_functions",
+          "passed": true,
+          "detail": "No file/system/settings functions"
+        },
+        {
+          "check": "allowed_tables",
+          "passed": true,
+          "detail": "Tables allowed: transactions"
+        },
+        {
+          "check": "no_qualified_names",
+          "passed": true,
+          "detail": "No schema/catalog qualifiers"
+        },
+        {
+          "check": "known_columns",
+          "passed": true,
+          "detail": "All columns exist in the allowed schema"
+        },
+        {
+          "check": "restricted_columns",
+          "passed": true,
+          "detail": "No restricted columns referenced"
+        },
+        {
+          "check": "no_star_on_sensitive_table",
+          "passed": true,
+          "detail": "No wildcard over sensitive tables"
+        },
+        {
+          "check": "join_conditions",
+          "passed": true,
+          "detail": "Every join has a condition"
+        },
+        {
+          "check": "join_count",
+          "passed": true,
+          "detail": "0 join(s)"
+        }
+      ]
+    },
+    {
+      "id": "Q3",
+      "purpose": "Order Conversion Rate (order level, net of retries) overall",
+      "status": "OK",
+      "rows": 1,
+      "ms": 31.0,
+      "cache_hit": false,
+      "tables": [
+        "transactions"
+      ],
+      "sql": "WITH orders AS (\n  SELECT\n      t.order_id,\n      MIN(t.created_at) AS first_attempt_at,\n      MAX(CASE WHEN t.status = 'SUCCESS' THEN 1 ELSE 0 END) AS succeeded\n  FROM transactions AS t\n  WHERE t.status IN ('SUCCESS', 'FAILED')\n    AND ((t.created_at >= TIMESTAMP '2026-11-09 00:00:00' AND t.created_at < TIMESTAMP '2026-11-16 00:00:00'))\n  GROUP BY t.order_id\n)\nSELECT\n    'current' AS period,\n    SUM(o.succeeded) AS numerator,\n    COUNT(*) AS denominator\nFROM orders AS o\nWHERE ((o.first_attempt_at >= TIMESTAMP '2026-11-09 00:00:00' AND o.first_attempt_at < TIMESTAMP '2026-11-16 00:00:00'))\nGROUP BY 1\nORDER BY 1",
+      "executed_sql": "WITH orders AS (\n  SELECT\n      t.order_id,\n      MIN(t.created_at) AS first_attempt_at,\n      MAX(CASE WHEN t.status = 'SUCCESS' THEN 1 ELSE 0 END) AS succeeded\n  FROM transactions AS t\n  WHERE t.status IN ('SUCCESS', 'FAILED')\n    AND ((t.created_at >= TIMESTAMP '2026-11-09 00:00:00' AND t.created_at < TIMESTAMP '2026-11-16 00:00:00'))\n  GROUP BY t.order_id\n)\nSELECT\n    'current' AS period,\n    SUM(o.succeeded) AS numerator,\n    COUNT(*) AS denominator\nFROM orders AS o\nWHERE ((o.first_attempt_at >= TIMESTAMP '2026-11-09 00:00:00' AND o.first_attempt_at < TIMESTAMP '2026-11-16 00:00:00'))\nGROUP BY 1\nORDER BY 1",
+      "checks": [
+        {
+          "check": "parse",
+          "passed": true,
+          "detail": "Parsed with sqlglot (duckdb dialect)"
+        },
+        {
+          "check": "single_statement",
+          "passed": true,
+          "detail": "Exactly one statement required (found 1)"
+        },
+        {
+          "check": "read_only_statement",
+          "passed": true,
+          "detail": "Statement is a SELECT"
+        },
+        {
+          "check": "no_forbidden_commands",
+          "passed": true,
+          "detail": "No DDL/DML/COPY/ATTACH/PRAGMA/INSTALL"
+        },
+        {
+          "check": "no_forbidden_functions",
+          "passed": true,
+          "detail": "No file/system/settings functions"
+        },
+        {
+          "check": "allowed_tables",
+          "passed": true,
+          "detail": "Tables allowed: transactions"
+        },
+        {
+          "check": "no_qualified_names",
+          "passed": true,
+          "detail": "No schema/catalog qualifiers"
+        },
+        {
+          "check": "known_columns",
+          "passed": true,
+          "detail": "All columns exist in the allowed schema"
+        },
+        {
+          "check": "restricted_columns",
+          "passed": true,
+          "detail": "No restricted columns referenced"
+        },
+        {
+          "check": "no_star_on_sensitive_table",
+          "passed": true,
+          "detail": "No wildcard over sensitive tables"
+        },
+        {
+          "check": "join_conditions",
+          "passed": true,
+          "detail": "Every join has a condition"
+        },
+        {
+          "check": "join_count",
+          "passed": true,
+          "detail": "0 join(s)"
+        }
+      ]
+    },
+    {
+      "id": "Q4",
+      "purpose": "Data quality: duplicate transaction ids in raw data",
+      "status": "OK",
+      "rows": 1,
+      "ms": 0.0,
+      "cache_hit": true,
+      "tables": [
+        "transactions_raw"
+      ],
+      "sql": "SELECT COUNT(*) AS duplicate_ids, COALESCE(SUM(c - 1), 0) AS extra_rows\nFROM (SELECT t.txn_id, COUNT(*) AS c FROM transactions_raw AS t WHERE t.created_at >= TIMESTAMP '2026-11-09 00:00:00' AND t.created_at < TIMESTAMP '2026-11-16 00:00:00' GROUP BY t.txn_id HAVING COUNT(*) > 1) AS d",
+      "executed_sql": "SELECT COUNT(*) AS duplicate_ids, COALESCE(SUM(c - 1), 0) AS extra_rows\nFROM (SELECT t.txn_id, COUNT(*) AS c FROM transactions_raw AS t WHERE t.created_at >= TIMESTAMP '2026-11-09 00:00:00' AND t.created_at < TIMESTAMP '2026-11-16 00:00:00' GROUP BY t.txn_id HAVING COUNT(*) > 1) AS d",
+      "checks": [
+        {
+          "check": "parse",
+          "passed": true,
+          "detail": "Parsed with sqlglot (duckdb dialect)"
+        },
+        {
+          "check": "single_statement",
+          "passed": true,
+          "detail": "Exactly one statement required (found 1)"
+        },
+        {
+          "check": "read_only_statement",
+          "passed": true,
+          "detail": "Statement is a SELECT"
+        },
+        {
+          "check": "no_forbidden_commands",
+          "passed": true,
+          "detail": "No DDL/DML/COPY/ATTACH/PRAGMA/INSTALL"
+        },
+        {
+          "check": "no_forbidden_functions",
+          "passed": true,
+          "detail": "No file/system/settings functions"
+        },
+        {
+          "check": "allowed_tables",
+          "passed": true,
+          "detail": "Tables allowed: transactions_raw"
+        },
+        {
+          "check": "no_qualified_names",
+          "passed": true,
+          "detail": "No schema/catalog qualifiers"
+        },
+        {
+          "check": "known_columns",
+          "passed": true,
+          "detail": "All columns exist in the allowed schema"
+        },
+        {
+          "check": "restricted_columns",
+          "passed": true,
+          "detail": "No restricted columns referenced"
+        },
+        {
+          "check": "no_star_on_sensitive_table",
+          "passed": true,
+          "detail": "No wildcard over sensitive tables"
+        },
+        {
+          "check": "join_conditions",
+          "passed": true,
+          "detail": "Every join has a condition"
+        },
+        {
+          "check": "join_count",
+          "passed": true,
+          "detail": "0 join(s)"
+        }
+      ]
+    },
+    {
+      "id": "Q5",
+      "purpose": "Data quality: missing bank_id",
+      "status": "OK",
+      "rows": 1,
+      "ms": 0.0,
+      "cache_hit": true,
+      "tables": [
+        "transactions"
+      ],
+      "sql": "SELECT COUNT(*) AS n FROM transactions AS t WHERE t.bank_id IS NULL AND t.created_at >= TIMESTAMP '2026-11-09 00:00:00' AND t.created_at < TIMESTAMP '2026-11-16 00:00:00'",
+      "executed_sql": "SELECT COUNT(*) AS n FROM transactions AS t WHERE t.bank_id IS NULL AND t.created_at >= TIMESTAMP '2026-11-09 00:00:00' AND t.created_at < TIMESTAMP '2026-11-16 00:00:00'",
+      "checks": [
+        {
+          "check": "parse",
+          "passed": true,
+          "detail": "Parsed with sqlglot (duckdb dialect)"
+        },
+        {
+          "check": "single_statement",
+          "passed": true,
+          "detail": "Exactly one statement required (found 1)"
+        },
+        {
+          "check": "read_only_statement",
+          "passed": true,
+          "detail": "Statement is a SELECT"
+        },
+        {
+          "check": "no_forbidden_commands",
+          "passed": true,
+          "detail": "No DDL/DML/COPY/ATTACH/PRAGMA/INSTALL"
+        },
+        {
+          "check": "no_forbidden_functions",
+          "passed": true,
+          "detail": "No file/system/settings functions"
+        },
+        {
+          "check": "allowed_tables",
+          "passed": true,
+          "detail": "Tables allowed: transactions"
+        },
+        {
+          "check": "no_qualified_names",
+          "passed": true,
+          "detail": "No schema/catalog qualifiers"
+        },
+        {
+          "check": "known_columns",
+          "passed": true,
+          "detail": "All columns exist in the allowed schema"
+        },
+        {
+          "check": "restricted_columns",
+          "passed": true,
+          "detail": "No restricted columns referenced"
+        },
+        {
+          "check": "no_star_on_sensitive_table",
+          "passed": true,
+          "detail": "No wildcard over sensitive tables"
+        },
+        {
+          "check": "join_conditions",
+          "passed": true,
+          "detail": "Every join has a condition"
+        },
+        {
+          "check": "join_count",
+          "passed": true,
+          "detail": "0 join(s)"
+        }
+      ]
+    },
+    {
+      "id": "Q6",
+      "purpose": "Data quality: bank_id with no matching bank",
+      "status": "OK",
+      "rows": 1,
+      "ms": 0.0,
+      "cache_hit": true,
+      "tables": [
+        "banks",
+        "transactions"
+      ],
+      "sql": "SELECT COUNT(*) AS n FROM transactions AS t LEFT JOIN banks AS b ON t.bank_id = b.bank_id\nWHERE t.bank_id IS NOT NULL AND b.bank_id IS NULL AND t.created_at >= TIMESTAMP '2026-11-09 00:00:00' AND t.created_at < TIMESTAMP '2026-11-16 00:00:00'",
+      "executed_sql": "SELECT COUNT(*) AS n FROM transactions AS t LEFT JOIN banks AS b ON t.bank_id = b.bank_id\nWHERE t.bank_id IS NOT NULL AND b.bank_id IS NULL AND t.created_at >= TIMESTAMP '2026-11-09 00:00:00' AND t.created_at < TIMESTAMP '2026-11-16 00:00:00'",
+      "checks": [
+        {
+          "check": "parse",
+          "passed": true,
+          "detail": "Parsed with sqlglot (duckdb dialect)"
+        },
+        {
+          "check": "single_statement",
+          "passed": true,
+          "detail": "Exactly one statement required (found 1)"
+        },
+        {
+          "check": "read_only_statement",
+          "passed": true,
+          "detail": "Statement is a SELECT"
+        },
+        {
+          "check": "no_forbidden_commands",
+          "passed": true,
+          "detail": "No DDL/DML/COPY/ATTACH/PRAGMA/INSTALL"
+        },
+        {
+          "check": "no_forbidden_functions",
+          "passed": true,
+          "detail": "No file/system/settings functions"
+        },
+        {
+          "check": "allowed_tables",
+          "passed": true,
+          "detail": "Tables allowed: banks, transactions"
+        },
+        {
+          "check": "no_qualified_names",
+          "passed": true,
+          "detail": "No schema/catalog qualifiers"
+        },
+        {
+          "check": "known_columns",
+          "passed": true,
+          "detail": "All columns exist in the allowed schema"
+        },
+        {
+          "check": "restricted_columns",
+          "passed": true,
+          "detail": "No restricted columns referenced"
+        },
+        {
+          "check": "no_star_on_sensitive_table",
+          "passed": true,
+          "detail": "No wildcard over sensitive tables"
+        },
+        {
+          "check": "join_conditions",
+          "passed": true,
+          "detail": "Every join has a condition"
+        },
+        {
+          "check": "join_count",
+          "passed": true,
+          "detail": "1 join(s)"
+        }
+      ]
+    },
+    {
+      "id": "Q7",
+      "purpose": "Data quality: invalid status values",
+      "status": "OK",
+      "rows": 5,
+      "ms": 0.0,
+      "cache_hit": true,
+      "tables": [
+        "transactions_raw"
+      ],
+      "sql": "SELECT t.status AS status, COUNT(*) AS n FROM transactions_raw AS t\nWHERE t.status NOT IN ('SUCCESS', 'FAILED', 'PENDING', 'USER_CANCELLED') GROUP BY 1 ORDER BY 2 DESC",
+      "executed_sql": "SELECT t.status AS status, COUNT(*) AS n FROM transactions_raw AS t\nWHERE t.status NOT IN ('SUCCESS', 'FAILED', 'PENDING', 'USER_CANCELLED') GROUP BY 1 ORDER BY 2 DESC",
+      "checks": [
+        {
+          "check": "parse",
+          "passed": true,
+          "detail": "Parsed with sqlglot (duckdb dialect)"
+        },
+        {
+          "check": "single_statement",
+          "passed": true,
+          "detail": "Exactly one statement required (found 1)"
+        },
+        {
+          "check": "read_only_statement",
+          "passed": true,
+          "detail": "Statement is a SELECT"
+        },
+        {
+          "check": "no_forbidden_commands",
+          "passed": true,
+          "detail": "No DDL/DML/COPY/ATTACH/PRAGMA/INSTALL"
+        },
+        {
+          "check": "no_forbidden_functions",
+          "passed": true,
+          "detail": "No file/system/settings functions"
+        },
+        {
+          "check": "allowed_tables",
+          "passed": true,
+          "detail": "Tables allowed: transactions_raw"
+        },
+        {
+          "check": "no_qualified_names",
+          "passed": true,
+          "detail": "No schema/catalog qualifiers"
+        },
+        {
+          "check": "known_columns",
+          "passed": true,
+          "detail": "All columns exist in the allowed schema"
+        },
+        {
+          "check": "restricted_columns",
+          "passed": true,
+          "detail": "No restricted columns referenced"
+        },
+        {
+          "check": "no_star_on_sensitive_table",
+          "passed": true,
+          "detail": "No wildcard over sensitive tables"
+        },
+        {
+          "check": "join_conditions",
+          "passed": true,
+          "detail": "Every join has a condition"
+        },
+        {
+          "check": "join_count",
+          "passed": true,
+          "detail": "0 join(s)"
+        }
+      ]
+    },
+    {
+      "id": "Q8",
+      "purpose": "Data quality: timestamps after data as-of time",
+      "status": "OK",
+      "rows": 1,
+      "ms": 0.0,
+      "cache_hit": true,
+      "tables": [
+        "transactions_raw"
+      ],
+      "sql": "SELECT COUNT(*) AS n FROM transactions_raw AS t WHERE t.created_at > TIMESTAMP '2026-11-16 06:00:00'",
+      "executed_sql": "SELECT COUNT(*) AS n FROM transactions_raw AS t WHERE t.created_at > TIMESTAMP '2026-11-16 06:00:00'",
+      "checks": [
+        {
+          "check": "parse",
+          "passed": true,
+          "detail": "Parsed with sqlglot (duckdb dialect)"
+        },
+        {
+          "check": "single_statement",
+          "passed": true,
+          "detail": "Exactly one statement required (found 1)"
+        },
+        {
+          "check": "read_only_statement",
+          "passed": true,
+          "detail": "Statement is a SELECT"
+        },
+        {
+          "check": "no_forbidden_commands",
+          "passed": true,
+          "detail": "No DDL/DML/COPY/ATTACH/PRAGMA/INSTALL"
+        },
+        {
+          "check": "no_forbidden_functions",
+          "passed": true,
+          "detail": "No file/system/settings functions"
+        },
+        {
+          "check": "allowed_tables",
+          "passed": true,
+          "detail": "Tables allowed: transactions_raw"
+        },
+        {
+          "check": "no_qualified_names",
+          "passed": true,
+          "detail": "No schema/catalog qualifiers"
+        },
+        {
+          "check": "known_columns",
+          "passed": true,
+          "detail": "All columns exist in the allowed schema"
+        },
+        {
+          "check": "restricted_columns",
+          "passed": true,
+          "detail": "No restricted columns referenced"
+        },
+        {
+          "check": "no_star_on_sensitive_table",
+          "passed": true,
+          "detail": "No wildcard over sensitive tables"
+        },
+        {
+          "check": "join_conditions",
+          "passed": true,
+          "detail": "Every join has a condition"
+        },
+        {
+          "check": "join_count",
+          "passed": true,
+          "detail": "0 join(s)"
+        }
+      ]
+    },
+    {
+      "id": "Q9",
+      "purpose": "Data quality: Order Conversion Rate (order level, net of retries) on transactions_raw (current period)",
+      "status": "OK",
+      "rows": 1,
+      "ms": 8.71,
+      "cache_hit": false,
+      "tables": [
+        "transactions_raw"
+      ],
+      "sql": "WITH orders AS (\n  SELECT\n      t.order_id,\n      MIN(t.created_at) AS first_attempt_at,\n      MAX(CASE WHEN t.status = 'SUCCESS' THEN 1 ELSE 0 END) AS succeeded\n  FROM transactions_raw AS t\n  WHERE t.status IN ('SUCCESS', 'FAILED')\n    AND ((t.created_at >= TIMESTAMP '2026-11-09 00:00:00' AND t.created_at < TIMESTAMP '2026-11-16 00:00:00'))\n  GROUP BY t.order_id\n)\nSELECT\n    'current' AS period,\n    SUM(o.succeeded) AS numerator,\n    COUNT(*) AS denominator\nFROM orders AS o\nWHERE ((o.first_attempt_at >= TIMESTAMP '2026-11-09 00:00:00' AND o.first_attempt_at < TIMESTAMP '2026-11-16 00:00:00'))\nGROUP BY 1\nORDER BY 1",
+      "executed_sql": "WITH orders AS (\n  SELECT\n      t.order_id,\n      MIN(t.created_at) AS first_attempt_at,\n      MAX(CASE WHEN t.status = 'SUCCESS' THEN 1 ELSE 0 END) AS succeeded\n  FROM transactions_raw AS t\n  WHERE t.status IN ('SUCCESS', 'FAILED')\n    AND ((t.created_at >= TIMESTAMP '2026-11-09 00:00:00' AND t.created_at < TIMESTAMP '2026-11-16 00:00:00'))\n  GROUP BY t.order_id\n)\nSELECT\n    'current' AS period,\n    SUM(o.succeeded) AS numerator,\n    COUNT(*) AS denominator\nFROM orders AS o\nWHERE ((o.first_attempt_at >= TIMESTAMP '2026-11-09 00:00:00' AND o.first_attempt_at < TIMESTAMP '2026-11-16 00:00:00'))\nGROUP BY 1\nORDER BY 1",
+      "checks": [
+        {
+          "check": "parse",
+          "passed": true,
+          "detail": "Parsed with sqlglot (duckdb dialect)"
+        },
+        {
+          "check": "single_statement",
+          "passed": true,
+          "detail": "Exactly one statement required (found 1)"
+        },
+        {
+          "check": "read_only_statement",
+          "passed": true,
+          "detail": "Statement is a SELECT"
+        },
+        {
+          "check": "no_forbidden_commands",
+          "passed": true,
+          "detail": "No DDL/DML/COPY/ATTACH/PRAGMA/INSTALL"
+        },
+        {
+          "check": "no_forbidden_functions",
+          "passed": true,
+          "detail": "No file/system/settings functions"
+        },
+        {
+          "check": "allowed_tables",
+          "passed": true,
+          "detail": "Tables allowed: transactions_raw"
+        },
+        {
+          "check": "no_qualified_names",
+          "passed": true,
+          "detail": "No schema/catalog qualifiers"
+        },
+        {
+          "check": "known_columns",
+          "passed": true,
+          "detail": "All columns exist in the allowed schema"
+        },
+        {
+          "check": "restricted_columns",
+          "passed": true,
+          "detail": "No restricted columns referenced"
+        },
+        {
+          "check": "no_star_on_sensitive_table",
+          "passed": true,
+          "detail": "No wildcard over sensitive tables"
+        },
+        {
+          "check": "join_conditions",
+          "passed": true,
+          "detail": "Every join has a condition"
+        },
+        {
+          "check": "join_count",
+          "passed": true,
+          "detail": "0 join(s)"
+        }
+      ]
+    },
+    {
+      "id": "Q10",
+      "purpose": "Data quality: Order Conversion Rate (order level, net of retries) on transactions (current period)",
+      "status": "OK",
+      "rows": 1,
+      "ms": 0.0,
+      "cache_hit": true,
+      "tables": [
+        "transactions"
+      ],
+      "sql": "WITH orders AS (\n  SELECT\n      t.order_id,\n      MIN(t.created_at) AS first_attempt_at,\n      MAX(CASE WHEN t.status = 'SUCCESS' THEN 1 ELSE 0 END) AS succeeded\n  FROM transactions AS t\n  WHERE t.status IN ('SUCCESS', 'FAILED')\n    AND ((t.created_at >= TIMESTAMP '2026-11-09 00:00:00' AND t.created_at < TIMESTAMP '2026-11-16 00:00:00'))\n  GROUP BY t.order_id\n)\nSELECT\n    'current' AS period,\n    SUM(o.succeeded) AS numerator,\n    COUNT(*) AS denominator\nFROM orders AS o\nWHERE ((o.first_attempt_at >= TIMESTAMP '2026-11-09 00:00:00' AND o.first_attempt_at < TIMESTAMP '2026-11-16 00:00:00'))\nGROUP BY 1\nORDER BY 1",
+      "executed_sql": "WITH orders AS (\n  SELECT\n      t.order_id,\n      MIN(t.created_at) AS first_attempt_at,\n      MAX(CASE WHEN t.status = 'SUCCESS' THEN 1 ELSE 0 END) AS succeeded\n  FROM transactions AS t\n  WHERE t.status IN ('SUCCESS', 'FAILED')\n    AND ((t.created_at >= TIMESTAMP '2026-11-09 00:00:00' AND t.created_at < TIMESTAMP '2026-11-16 00:00:00'))\n  GROUP BY t.order_id\n)\nSELECT\n    'current' AS period,\n    SUM(o.succeeded) AS numerator,\n    COUNT(*) AS denominator\nFROM orders AS o\nWHERE ((o.first_attempt_at >= TIMESTAMP '2026-11-09 00:00:00' AND o.first_attempt_at < TIMESTAMP '2026-11-16 00:00:00'))\nGROUP BY 1\nORDER BY 1",
+      "checks": [
+        {
+          "check": "parse",
+          "passed": true,
+          "detail": "Parsed with sqlglot (duckdb dialect)"
+        },
+        {
+          "check": "single_statement",
+          "passed": true,
+          "detail": "Exactly one statement required (found 1)"
+        },
+        {
+          "check": "read_only_statement",
+          "passed": true,
+          "detail": "Statement is a SELECT"
+        },
+        {
+          "check": "no_forbidden_commands",
+          "passed": true,
+          "detail": "No DDL/DML/COPY/ATTACH/PRAGMA/INSTALL"
+        },
+        {
+          "check": "no_forbidden_functions",
+          "passed": true,
+          "detail": "No file/system/settings functions"
+        },
+        {
+          "check": "allowed_tables",
+          "passed": true,
+          "detail": "Tables allowed: transactions"
+        },
+        {
+          "check": "no_qualified_names",
+          "passed": true,
+          "detail": "No schema/catalog qualifiers"
+        },
+        {
+          "check": "known_columns",
+          "passed": true,
+          "detail": "All columns exist in the allowed schema"
+        },
+        {
+          "check": "restricted_columns",
+          "passed": true,
+          "detail": "No restricted columns referenced"
+        },
+        {
+          "check": "no_star_on_sensitive_table",
+          "passed": true,
+          "detail": "No wildcard over sensitive tables"
+        },
+        {
+          "check": "join_conditions",
+          "passed": true,
+          "detail": "Every join has a condition"
+        },
+        {
+          "check": "join_count",
+          "passed": true,
+          "detail": "0 join(s)"
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "F1",
+      "text": "Order Conversion Rate (order level, net of retries) for 09 Nov 2026 - 15 Nov 2026: 91.20% (95% CI 90.81% - 91.57%, n=21,276).",
+      "queries": [
+        "Q3"
+      ]
+    },
+    {
+      "id": "F2",
+      "text": "16 Nov is partially loaded (398 attempts vs ~3307/day) and was excluded from relative periods.",
+      "queries": [
+        "Q1"
+      ]
+    }
+  ],
+  "narrative": {
+    "summary": "Order Conversion Rate (order level, net of retries) for 09 Nov 2026 - 15 Nov 2026: 91.20% (95% CI 90.81% - 91.57%, n=21,276).",
+    "observed": [
+      "[F1] Order Conversion Rate (order level, net of retries) for 09 Nov 2026 - 15 Nov 2026: 91.20% (95% CI 90.81% - 91.57%, n=21,276).",
+      "[F2] 16 Nov is partially loaded (398 attempts vs ~3307/day) and was excluded from relative periods."
+    ],
+    "hypotheses": [],
+    "recommendations": [
+      "No anomaly requiring action was detected for this question; continue routine monitoring."
+    ],
+    "generated_by": "template",
+    "grounding": {
+      "passed": true,
+      "note": "Template narrative (built directly from computed facts)."
+    }
+  },
+  "confidence": {
+    "level": "High",
+    "score": 75,
+    "reasons": [
+      "Question interpreted by the rule-based parser (LLM not used).",
+      "1 ambiguity(ies) resolved with stated assumptions.",
+      "3 data-quality warning(s); affected rows were handled as shown.",
+      "Driver attribution is statistical contribution accounting, not proof of cause."
+    ]
+  },
+  "dq": {
+    "checks": [
+      {
+        "check": "Freshness",
+        "severity": "warning",
+        "count": 398,
+        "detail": "16 Nov has only 398 attempts vs a trailing median of 3307/day - the day is still loading.",
+        "handling": "Excluded: relative periods end on the last complete day (15 Nov).",
+        "query_id": "Q1"
+      },
+      {
+        "check": "Duplicate txn_id",
+        "severity": "warning",
+        "count": 500,
+        "detail": "500 transaction ids appear more than once (500 extra rows) in the analysis window.",
+        "handling": "Trusted view keeps the first ingested copy of each txn_id.",
+        "query_id": "Q4"
+      },
+      {
+        "check": "Missing bank_id",
+        "severity": "warning",
+        "count": 145,
+        "detail": "145 trusted transactions in the window have no bank_id.",
+        "handling": "Kept in totals; shown as bank 'UNKNOWN' in breakdowns.",
+        "query_id": "Q5"
+      },
+      {
+        "check": "Orphan bank_id",
+        "severity": "ok",
+        "count": 0,
+        "detail": "0 transactions reference a bank_id missing from the banks table.",
+        "handling": "Shown as 'UNKNOWN' bank.",
+        "query_id": "Q6"
+      },
+      {
+        "check": "Invalid status",
+        "severity": "info",
+        "count": 10,
+        "detail": "10 raw rows have invalid statuses: 'SUCESS'=3, 'ERR'=2, 'Failed '=2, 'success'=2, 'UNKNOWN'=1",
+        "handling": "Excluded by the trusted view.",
+        "query_id": "Q7"
+      },
+      {
+        "check": "Future timestamps",
+        "severity": "info",
+        "count": 20,
+        "detail": "20 raw rows are timestamped after the data as-of time (2026-11-16 06:00:00).",
+        "handling": "Excluded by the trusted view.",
+        "query_id": "Q8"
+      }
+    ],
+    "raw_vs_trusted": {
+      "raw_rate": 0.9119665350629818,
+      "raw_denominator": 21276,
+      "trusted_rate": 0.9119665350629818,
+      "trusted_denominator": 21276,
+      "difference_pp": 0.0,
+      "query_ids": [
+        "Q9",
+        "Q10"
+      ]
+    },
+    "warnings": 3,
+    "freshness": {
+      "last_day": "2026-11-16",
+      "last_day_attempts": 398,
+      "trailing_median_attempts": 3307.0,
+      "is_partial": true,
+      "last_complete_day": "2026-11-15",
+      "first_day": "2026-10-19",
+      "query_id": "Q1"
+    }
+  },
+  "trace": [
+    {
+      "step": "Check data freshness",
+      "component": "analytics/data_quality.py::freshness",
+      "detail": "last day 2026-11-16 partial=True; last complete 2026-11-15",
+      "elapsed_ms": 3.1
+    },
+    {
+      "step": "Understand question",
+      "component": "ai/intent_parser.py::parse_question",
+      "detail": "parser=rules; metric=order_conversion_rate; analysis=summary; dims=[]",
+      "elapsed_ms": 0.2
+    },
+    {
+      "step": "Validate filter values",
+      "component": "core/pipeline.py::_canonical_filters",
+      "detail": "filters={} unknown=[]",
+      "elapsed_ms": 0.0
+    },
+    {
+      "step": "Check access policy",
+      "component": "security/policy.py::check_intent",
+      "detail": "ALLOWED []",
+      "elapsed_ms": 0.0
+    },
+    {
+      "step": "Resolve time periods",
+      "component": "core/time_resolver.py::resolve_periods",
+      "detail": "current=09 Nov 2026 - 15 Nov 2026 previous=None",
+      "elapsed_ms": 0.0
+    },
+    {
+      "step": "Apply query budget",
+      "component": "core/pipeline.py::_run (limits)",
+      "detail": "days=7, dims=0",
+      "elapsed_ms": 0.0
+    },
+    {
+      "step": "Run analysis: summary",
+      "component": "core/pipeline.py::_summary",
+      "detail": "3 queries so far",
+      "elapsed_ms": 35.3
+    },
+    {
+      "step": "Data-quality gate",
+      "component": "analytics/data_quality.py::run_checks",
+      "detail": "3 warning(s)",
+      "elapsed_ms": 23.5
+    },
+    {
+      "step": "Build facts",
+      "component": "analytics/insights.py::build_facts",
+      "detail": "2 facts",
+      "elapsed_ms": 0.1
+    },
+    {
+      "step": "Write narrative",
+      "component": "ai/narrator.py::narrate",
+      "detail": "generated_by=template; grounding=True",
+      "elapsed_ms": 0.0
+    },
+    {
+      "step": "Score confidence",
+      "component": "analytics/insights.py::confidence",
+      "detail": "High (75)",
+      "elapsed_ms": 0.0
+    }
+  ],
+  "analysis": {
+    "metric_label": "Order Conversion Rate (order level, net of retries)",
+    "kind": "ratio",
+    "overall": {
+      "current": {
+        "value": 0.9119665350629818,
+        "num": 19403,
+        "den": 21276,
+        "ci": [
+          0.9080844167616245,
+          0.9156999106555493
+        ]
+      }
+    },
+    "decomposition": null,
+    "drivers": null,
+    "simpson": null,
+    "drilldown": null,
+    "reconciliation": null,
+    "grain": null,
+    "trend_summary": null,
+    "breakdown_top": null,
+    "llm_meta": {},
+    "bank_view": null
+  }
+}

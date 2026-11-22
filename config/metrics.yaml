@@ -1,0 +1,85 @@
+# This file defines every metric and dimension PaymentLens can use.
+# The AI only picks names from this file (for example "payment_success_rate" or "bank").
+# The small SQL pieces below are written by a developer, not by the AI.
+# sqlengine/compiler.py joins these pieces together to build the full SQL query.
+version: 1
+time_column: created_at
+
+metrics:
+  payment_success_rate:
+    label: Payment Success Rate (attempt level)
+    kind: ratio
+    grain: attempt
+    row_filter: "t.status IN ('SUCCESS', 'FAILED')"
+    numerator_sql: "SUM(CASE WHEN t.status = 'SUCCESS' THEN 1 ELSE 0 END)"
+    denominator_sql: "COUNT(*)"
+    numerator: "attempts with status = SUCCESS"
+    denominator: "terminal attempts: status IN (SUCCESS, FAILED)"
+    excluded: ["PENDING (not final yet)", "USER_CANCELLED (customer abandoned)", "duplicate txn_id rows", "invalid statuses", "future timestamps"]
+    description: >-
+      Successful terminal payment attempts divided by all terminal attempts.
+      Each retry is counted as its own attempt (gross, attempt-level metric).
+    synonyms: [success rate, approval rate, payment success, success, failure rate, decline rate]
+
+  order_conversion_rate:
+    label: Order Conversion Rate (order level, net of retries)
+    kind: ratio
+    grain: order
+    row_filter: "t.status IN ('SUCCESS', 'FAILED')"
+    numerator: "orders where at least one attempt succeeded"
+    denominator: "orders with at least one terminal attempt"
+    excluded: ["PENDING", "USER_CANCELLED", "duplicate txn_id rows"]
+    description: >-
+      Share of orders that eventually succeeded. Retries of the same order are counted once.
+      An order is attributed to the bank, payment method and time of its first terminal attempt.
+    synonyms: [conversion, order conversion, order success, net success]
+
+  successful_gmv:
+    label: Successful GMV (INR)
+    kind: sum
+    grain: attempt
+    row_filter: "t.status = 'SUCCESS'"
+    value_sql: "SUM(t.amount)"
+    description: Total amount of successful payment attempts.
+    synonyms: [gmv, volume, amount, revenue, tpv]
+
+  transaction_count:
+    label: Terminal Attempt Count
+    kind: count
+    grain: attempt
+    row_filter: "t.status IN ('SUCCESS', 'FAILED')"
+    value_sql: "COUNT(*)"
+    description: Number of terminal payment attempts.
+    synonyms: [transactions, count, attempts, traffic]
+
+dimensions:
+  bank:            {label: Bank, sql: "COALESCE(b.bank_name, 'UNKNOWN')", join: banks}
+  payment_method:  {label: Payment method, sql: "t.payment_method"}
+  merchant_category: {label: Merchant category, sql: "m.category", join: merchants}
+  region:          {label: Region, sql: "t.region"}
+  decline_reason:  {label: Decline reason, sql: "COALESCE(t.decline_reason, 'NONE')"}
+  merchant:        {label: Merchant ID, sql: "t.merchant_id"}
+  day:             {label: Day, sql: "CAST(t.created_at AS DATE)"}
+
+joins:
+  banks: "LEFT JOIN banks AS b ON t.bank_id = b.bank_id"
+  merchants: "LEFT JOIN merchants AS m ON t.merchant_id = m.merchant_id"
+
+# Extra data a user might ask for (not used in analysis). The access rules check this list.
+attributes:
+  settlement_account: {table: merchants, column: settlement_account, label: merchant settlement bank account, sensitivity: restricted}
+  contact_email:      {table: merchants, column: contact_email, label: merchant contact email, sensitivity: restricted}
+  merchant_name:      {table: merchants, column: merchant_name, label: merchant name, sensitivity: internal}
+
+root_cause:
+  decomposition_grain: [bank, payment_method]
+  driver_dimensions: [bank, payment_method, merchant_category, region]
+  min_segment_attempts: 200
+  significance_alpha: 0.05
+
+limits:
+  max_range_days: 90
+  max_dimensions: 3
+  max_rows: 5000
+  query_timeout_seconds: 5
+  freshness_partial_threshold: 0.5   # if the last day has less than half the usual volume, treat it as still loading

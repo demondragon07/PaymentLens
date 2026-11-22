@@ -1,0 +1,16 @@
+duckdb>=1.1
+pandas>=2.2
+numpy>=1.26
+scipy>=1.11
+pydantic>=2.7
+pyyaml>=6.0
+python-dotenv>=1.0
+sqlglot>=25.0
+openai>=1.40
+streamlit>=1.38
+plotly>=5.22
+pytest>=8.0
+# documentation build only
+matplotlib>=3.8
+reportlab>=4.0
+pypdfium2>=4.0

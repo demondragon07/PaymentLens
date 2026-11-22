@@ -1,0 +1,1547 @@
+{
+  "question": "Why did success rate fall last week?",
+  "role": "regional_analyst_north",
+  "status": "ANSWERED",
+  "message": "",
+  "parser": "rules",
+  "parser_notes": [],
+  "intent": {
+    "is_supported": true,
+    "unsupported_reason": null,
+    "metric": "payment_success_rate",
+    "metric_explicit": false,
+    "analysis_type": "root_cause",
+    "current_period": {
+      "kind": "last_full_week",
+      "n_days": null,
+      "start": null,
+      "end": null
+    },
+    "comparison": "previous_period",
+    "comparison_period": null,
+    "dimensions": [],
+    "filters": [],
+    "data_source": "trusted",
+    "requested_attributes": [],
+    "ambiguities": [
+      "'Success rate' could be attempt-level (each retry counted) or order-level (net of retries); used attempt-level Payment Success Rate.",
+      "'Last week' could mean the last calendar week (Mon-Sun) or the last 7 days."
+    ]
+  },
+  "resolved": {
+    "metric": "payment_success_rate",
+    "analysis_type": "root_cause",
+    "current": "09 Nov 2026 - 15 Nov 2026",
+    "previous": "02 Nov 2026 - 08 Nov 2026",
+    "filters": {
+      "region": [
+        "North"
+      ]
+    },
+    "dimensions": [],
+    "source": "transactions",
+    "assumptions": [
+      "'Last week' = last full calendar week Mon-Sun (09 Nov - 15 Nov) - identical to the last 7 complete days here.",
+      "Comparison period = the 7 days before (02 Nov 2026 - 08 Nov 2026).",
+      "16 Nov is partially loaded and excluded from relative periods."
+    ],
+    "notices": [
+      "Results are limited to region = North (your data scope)."
+    ]
+  },
+  "policy": {
+    "status": "SCOPED",
+    "reasons": [],
+    "notices": [
+      "Results are limited to region = North (your data scope)."
+    ],
+    "allowed_scope": [
+      "Aggregated payment performance (success rate, conversion, GMV, volume)",
+      "Breakdowns by bank, payment method, merchant category, region, merchant ID, decline reason",
+      "Only rows where region = North"
+    ],
+    "alternative": null,
+    "scoped_filters": {
+      "region": [
+        "North"
+      ]
+    }
+  },
+  "queries": [
+    {
+      "id": "Q1",
+      "purpose": "Data quality: freshness (daily volume of latest days)",
+      "status": "OK",
+      "rows": 8,
+      "ms": 24.69,
+      "cache_hit": false,
+      "tables": [
+        "transactions"
+      ],
+      "sql": "SELECT CAST(t.created_at AS DATE) AS day, COUNT(*) AS attempts\nFROM transactions AS t\nWHERE t.created_at <= TIMESTAMP '2026-11-16 06:00:00'\nGROUP BY 1\nORDER BY 1 DESC\nLIMIT 8",
+      "executed_sql": "SELECT\n  CAST(t.created_at AS DATE) AS day,\n  COUNT(*) AS attempts\nFROM (\n  SELECT\n    *\n  FROM transactions\n  WHERE\n    region = 'North'\n) AS t\nWHERE\n  t.created_at <= CAST('2026-11-16 06:00:00' AS TIMESTAMP)\nGROUP BY\n  1\nORDER BY\n  1 DESC\nLIMIT 8",
+      "checks": [
+        {
+          "check": "parse",
+          "passed": true,
+          "detail": "Parsed with sqlglot (duckdb dialect)"
+        },
+        {
+          "check": "single_statement",
+          "passed": true,
+          "detail": "Exactly one statement required (found 1)"
+        },
+        {
+          "check": "read_only_statement",
+          "passed": true,
+          "detail": "Statement is a SELECT"
+        },
+        {
+          "check": "no_forbidden_commands",
+          "passed": true,
+          "detail": "No DDL/DML/COPY/ATTACH/PRAGMA/INSTALL"
+        },
+        {
+          "check": "no_forbidden_functions",
+          "passed": true,
+          "detail": "No file/system/settings functions"
+        },
+        {
+          "check": "allowed_tables",
+          "passed": true,
+          "detail": "Tables allowed: transactions"
+        },
+        {
+          "check": "no_qualified_names",
+          "passed": true,
+          "detail": "No schema/catalog qualifiers"
+        },
+        {
+          "check": "known_columns",
+          "passed": true,
+          "detail": "All columns exist in the allowed schema"
+        },
+        {
+          "check": "restricted_columns",
+          "passed": true,
+          "detail": "No restricted columns referenced"
+        },
+        {
+          "check": "no_star_on_sensitive_table",
+          "passed": true,
+          "detail": "No wildcard over sensitive tables"
+        },
+        {
+          "check": "join_conditions",
+          "passed": true,
+          "detail": "Every join has a condition"
+        },
+        {
+          "check": "join_count",
+          "passed": true,
+          "detail": "0 join(s)"
+        }
+      ]
+    },
+    {
+      "id": "Q2",
+      "purpose": "Data quality: first day of data",
+      "status": "OK",
+      "rows": 1,
+      "ms": 26.02,
+      "cache_hit": false,
+      "tables": [
+        "transactions"
+      ],
+      "sql": "SELECT CAST(MIN(t.created_at) AS DATE) AS first_day FROM transactions AS t",
+      "executed_sql": "SELECT\n  CAST(MIN(t.created_at) AS DATE) AS first_day\nFROM (\n  SELECT\n    *\n  FROM transactions\n  WHERE\n    region = 'North'\n) AS t",
+      "checks": [
+        {
+          "check": "parse",
+          "passed": true,
+          "detail": "Parsed with sqlglot (duckdb dialect)"
+        },
+        {
+          "check": "single_statement",
+          "passed": true,
+          "detail": "Exactly one statement required (found 1)"
+        },
+        {
+          "check": "read_only_statement",
+          "passed": true,
+          "detail": "Statement is a SELECT"
+        },
+        {
+          "check": "no_forbidden_commands",
+          "passed": true,
+          "detail": "No DDL/DML/COPY/ATTACH/PRAGMA/INSTALL"
+        },
+        {
+          "check": "no_forbidden_functions",
+          "passed": true,
+          "detail": "No file/system/settings functions"
+        },
+        {
+          "check": "allowed_tables",
+          "passed": true,
+          "detail": "Tables allowed: transactions"
+        },
+        {
+          "check": "no_qualified_names",
+          "passed": true,
+          "detail": "No schema/catalog qualifiers"
+        },
+        {
+          "check": "known_columns",
+          "passed": true,
+          "detail": "All columns exist in the allowed schema"
+        },
+        {
+          "check": "restricted_columns",
+          "passed": true,
+          "detail": "No restricted columns referenced"
+        },
+        {
+          "check": "no_star_on_sensitive_table",
+          "passed": true,
+          "detail": "No wildcard over sensitive tables"
+        },
+        {
+          "check": "join_conditions",
+          "passed": true,
+          "detail": "Every join has a condition"
+        },
+        {
+          "check": "join_count",
+          "passed": true,
+          "detail": "0 join(s)"
+        }
+      ]
+    },
+    {
+      "id": "Q3",
+      "purpose": "Root cause: Payment Success Rate (attempt level) by bank, payment_method, merchant_category, region for both periods",
+      "status": "OK",
+      "rows": 232,
+      "ms": 56.3,
+      "cache_hit": false,
+      "tables": [
+        "banks",
+        "merchants",
+        "transactions"
+      ],
+      "sql": "SELECT\n    CASE WHEN t.created_at >= TIMESTAMP '2026-11-09 00:00:00' AND t.created_at < TIMESTAMP '2026-11-16 00:00:00' THEN 'current' WHEN t.created_at >= TIMESTAMP '2026-11-02 00:00:00' AND t.created_at < TIMESTAMP '2026-11-09 00:00:00' THEN 'previous' END AS period,\n    COALESCE(b.bank_name, 'UNKNOWN') AS bank,\n    t.payment_method AS payment_method,\n    m.category AS merchant_category,\n    t.region AS region,\n    SUM(CASE WHEN t.status = 'SUCCESS' THEN 1 ELSE 0 END) AS numerator,\n    COUNT(*) AS denominator\nFROM transactions AS t\nLEFT JOIN banks AS b ON t.bank_id = b.bank_id\nLEFT JOIN merchants AS m ON t.merchant_id = m.merchant_id\nWHERE t.status IN ('SUCCESS', 'FAILED')\n  AND ((t.created_at >= TIMESTAMP '2026-11-09 00:00:00' AND t.created_at < TIMESTAMP '2026-11-16 00:00:00') OR (t.created_at >= TIMESTAMP '2026-11-02 00:00:00' AND t.created_at < TIMESTAMP '2026-11-09 00:00:00'))\n  AND t.region IN ('North')\nGROUP BY 1, 2, 3, 4, 5\nORDER BY 1, 2, 3, 4, 5",
+      "executed_sql": "SELECT\n  CASE\n    WHEN t.created_at >= CAST('2026-11-09 00:00:00' AS TIMESTAMP)\n    AND t.created_at < CAST('2026-11-16 00:00:00' AS TIMESTAMP)\n    THEN 'current'\n    WHEN t.created_at >= CAST('2026-11-02 00:00:00' AS TIMESTAMP)\n    AND t.created_at < CAST('2026-11-09 00:00:00' AS TIMESTAMP)\n    THEN 'previous'\n  END AS period,\n  COALESCE(b.bank_name, 'UNKNOWN') AS bank,\n  t.payment_method AS payment_method,\n  m.category AS merchant_category,\n  t.region AS region,\n  SUM(CASE WHEN t.status = 'SUCCESS' THEN 1 ELSE 0 END) AS numerator,\n  COUNT(*) AS denominator\nFROM (\n  SELECT\n    *\n  FROM transactions\n  WHERE\n    region = 'North'\n) AS t\nLEFT JOIN banks AS b\n  ON t.bank_id = b.bank_id\nLEFT JOIN (\n  SELECT\n    *\n  FROM merchants\n  WHERE\n    region = 'North'\n) AS m\n  ON t.merchant_id = m.merchant_id\nWHERE\n  t.status IN ('SUCCESS', 'FAILED')\n  AND (\n    (\n      t.created_at >= CAST('2026-11-09 00:00:00' AS TIMESTAMP)\n      AND t.created_at < CAST('2026-11-16 00:00:00' AS TIMESTAMP)\n    )\n    OR (\n      t.created_at >= CAST('2026-11-02 00:00:00' AS TIMESTAMP)\n      AND t.created_at < CAST('2026-11-09 00:00:00' AS TIMESTAMP)\n    )\n  )\n  AND t.region IN ('North')\nGROUP BY\n  1,\n  2,\n  3,\n  4,\n  5\nORDER BY\n  1,\n  2,\n  3,\n  4,\n  5",
+      "checks": [
+        {
+          "check": "parse",
+          "passed": true,
+          "detail": "Parsed with sqlglot (duckdb dialect)"
+        },
+        {
+          "check": "single_statement",
+          "passed": true,
+          "detail": "Exactly one statement required (found 1)"
+        },
+        {
+          "check": "read_only_statement",
+          "passed": true,
+          "detail": "Statement is a SELECT"
+        },
+        {
+          "check": "no_forbidden_commands",
+          "passed": true,
+          "detail": "No DDL/DML/COPY/ATTACH/PRAGMA/INSTALL"
+        },
+        {
+          "check": "no_forbidden_functions",
+          "passed": true,
+          "detail": "No file/system/settings functions"
+        },
+        {
+          "check": "allowed_tables",
+          "passed": true,
+          "detail": "Tables allowed: banks, merchants, transactions"
+        },
+        {
+          "check": "no_qualified_names",
+          "passed": true,
+          "detail": "No schema/catalog qualifiers"
+        },
+        {
+          "check": "known_columns",
+          "passed": true,
+          "detail": "All columns exist in the allowed schema"
+        },
+        {
+          "check": "restricted_columns",
+          "passed": true,
+          "detail": "No restricted columns referenced"
+        },
+        {
+          "check": "no_star_on_sensitive_table",
+          "passed": true,
+          "detail": "No wildcard over sensitive tables"
+        },
+        {
+          "check": "join_conditions",
+          "passed": true,
+          "detail": "Every join has a condition"
+        },
+        {
+          "check": "join_count",
+          "passed": true,
+          "detail": "2 join(s)"
+        }
+      ]
+    },
+    {
+      "id": "Q4",
+      "purpose": "Trend: Payment Success Rate (attempt level) by day",
+      "status": "OK",
+      "rows": 14,
+      "ms": 31.23,
+      "cache_hit": false,
+      "tables": [
+        "transactions"
+      ],
+      "sql": "SELECT\n    CASE WHEN t.created_at >= TIMESTAMP '2026-11-09 00:00:00' AND t.created_at < TIMESTAMP '2026-11-16 00:00:00' THEN 'current' WHEN t.created_at >= TIMESTAMP '2026-11-02 00:00:00' AND t.created_at < TIMESTAMP '2026-11-09 00:00:00' THEN 'previous' END AS period,\n    CAST(t.created_at AS DATE) AS day,\n    SUM(CASE WHEN t.status = 'SUCCESS' THEN 1 ELSE 0 END) AS numerator,\n    COUNT(*) AS denominator\nFROM transactions AS t\nWHERE t.status IN ('SUCCESS', 'FAILED')\n  AND ((t.created_at >= TIMESTAMP '2026-11-09 00:00:00' AND t.created_at < TIMESTAMP '2026-11-16 00:00:00') OR (t.created_at >= TIMESTAMP '2026-11-02 00:00:00' AND t.created_at < TIMESTAMP '2026-11-09 00:00:00'))\n  AND t.region IN ('North')\nGROUP BY 1, 2\nORDER BY 1, 2",
+      "executed_sql": "SELECT\n  CASE\n    WHEN t.created_at >= CAST('2026-11-09 00:00:00' AS TIMESTAMP)\n    AND t.created_at < CAST('2026-11-16 00:00:00' AS TIMESTAMP)\n    THEN 'current'\n    WHEN t.created_at >= CAST('2026-11-02 00:00:00' AS TIMESTAMP)\n    AND t.created_at < CAST('2026-11-09 00:00:00' AS TIMESTAMP)\n    THEN 'previous'\n  END AS period,\n  CAST(t.created_at AS DATE) AS day,\n  SUM(CASE WHEN t.status = 'SUCCESS' THEN 1 ELSE 0 END) AS numerator,\n  COUNT(*) AS denominator\nFROM (\n  SELECT\n    *\n  FROM transactions\n  WHERE\n    region = 'North'\n) AS t\nWHERE\n  t.status IN ('SUCCESS', 'FAILED')\n  AND (\n    (\n      t.created_at >= CAST('2026-11-09 00:00:00' AS TIMESTAMP)\n      AND t.created_at < CAST('2026-11-16 00:00:00' AS TIMESTAMP)\n    )\n    OR (\n      t.created_at >= CAST('2026-11-02 00:00:00' AS TIMESTAMP)\n      AND t.created_at < CAST('2026-11-09 00:00:00' AS TIMESTAMP)\n    )\n  )\n  AND t.region IN ('North')\nGROUP BY\n  1,\n  2\nORDER BY\n  1,\n  2",
+      "checks": [
+        {
+          "check": "parse",
+          "passed": true,
+          "detail": "Parsed with sqlglot (duckdb dialect)"
+        },
+        {
+          "check": "single_statement",
+          "passed": true,
+          "detail": "Exactly one statement required (found 1)"
+        },
+        {
+          "check": "read_only_statement",
+          "passed": true,
+          "detail": "Statement is a SELECT"
+        },
+        {
+          "check": "no_forbidden_commands",
+          "passed": true,
+          "detail": "No DDL/DML/COPY/ATTACH/PRAGMA/INSTALL"
+        },
+        {
+          "check": "no_forbidden_functions",
+          "passed": true,
+          "detail": "No file/system/settings functions"
+        },
+        {
+          "check": "allowed_tables",
+          "passed": true,
+          "detail": "Tables allowed: transactions"
+        },
+        {
+          "check": "no_qualified_names",
+          "passed": true,
+          "detail": "No schema/catalog qualifiers"
+        },
+        {
+          "check": "known_columns",
+          "passed": true,
+          "detail": "All columns exist in the allowed schema"
+        },
+        {
+          "check": "restricted_columns",
+          "passed": true,
+          "detail": "No restricted columns referenced"
+        },
+        {
+          "check": "no_star_on_sensitive_table",
+          "passed": true,
+          "detail": "No wildcard over sensitive tables"
+        },
+        {
+          "check": "join_conditions",
+          "passed": true,
+          "detail": "Every join has a condition"
+        },
+        {
+          "check": "join_count",
+          "passed": true,
+          "detail": "0 join(s)"
+        }
+      ]
+    },
+    {
+      "id": "Q5",
+      "purpose": "Drill-down: failed attempts by decline reason",
+      "status": "OK",
+      "rows": 10,
+      "ms": 36.48,
+      "cache_hit": false,
+      "tables": [
+        "banks",
+        "transactions"
+      ],
+      "sql": "SELECT\n    CASE WHEN t.created_at >= TIMESTAMP '2026-11-09 00:00:00' AND t.created_at < TIMESTAMP '2026-11-16 00:00:00' THEN 'current' WHEN t.created_at >= TIMESTAMP '2026-11-02 00:00:00' AND t.created_at < TIMESTAMP '2026-11-09 00:00:00' THEN 'previous' END AS period,\n    COALESCE(t.decline_reason, 'NONE') AS decline_reason,\n    COUNT(*) AS failures\nFROM transactions AS t\nLEFT JOIN banks AS b ON t.bank_id = b.bank_id\nWHERE t.status = 'FAILED'\n  AND ((t.created_at >= TIMESTAMP '2026-11-09 00:00:00' AND t.created_at < TIMESTAMP '2026-11-16 00:00:00') OR (t.created_at >= TIMESTAMP '2026-11-02 00:00:00' AND t.created_at < TIMESTAMP '2026-11-09 00:00:00'))\n  AND t.region IN ('North')\n  AND COALESCE(b.bank_name, 'UNKNOWN') IN ('Nova Bank')\n  AND t.payment_method IN ('UPI')\nGROUP BY 1, 2\nORDER BY 1, 2",
+      "executed_sql": "SELECT\n  CASE\n    WHEN t.created_at >= CAST('2026-11-09 00:00:00' AS TIMESTAMP)\n    AND t.created_at < CAST('2026-11-16 00:00:00' AS TIMESTAMP)\n    THEN 'current'\n    WHEN t.created_at >= CAST('2026-11-02 00:00:00' AS TIMESTAMP)\n    AND t.created_at < CAST('2026-11-09 00:00:00' AS TIMESTAMP)\n    THEN 'previous'\n  END AS period,\n  COALESCE(t.decline_reason, 'NONE') AS decline_reason,\n  COUNT(*) AS failures\nFROM (\n  SELECT\n    *\n  FROM transactions\n  WHERE\n    region = 'North'\n) AS t\nLEFT JOIN banks AS b\n  ON t.bank_id = b.bank_id\nWHERE\n  t.status = 'FAILED'\n  AND (\n    (\n      t.created_at >= CAST('2026-11-09 00:00:00' AS TIMESTAMP)\n      AND t.created_at < CAST('2026-11-16 00:00:00' AS TIMESTAMP)\n    )\n    OR (\n      t.created_at >= CAST('2026-11-02 00:00:00' AS TIMESTAMP)\n      AND t.created_at < CAST('2026-11-09 00:00:00' AS TIMESTAMP)\n    )\n  )\n  AND t.region IN ('North')\n  AND COALESCE(b.bank_name, 'UNKNOWN') IN ('Nova Bank')\n  AND t.payment_method IN ('UPI')\nGROUP BY\n  1,\n  2\nORDER BY\n  1,\n  2",
+      "checks": [
+        {
+          "check": "parse",
+          "passed": true,
+          "detail": "Parsed with sqlglot (duckdb dialect)"
+        },
+        {
+          "check": "single_statement",
+          "passed": true,
+          "detail": "Exactly one statement required (found 1)"
+        },
+        {
+          "check": "read_only_statement",
+          "passed": true,
+          "detail": "Statement is a SELECT"
+        },
+        {
+          "check": "no_forbidden_commands",
+          "passed": true,
+          "detail": "No DDL/DML/COPY/ATTACH/PRAGMA/INSTALL"
+        },
+        {
+          "check": "no_forbidden_functions",
+          "passed": true,
+          "detail": "No file/system/settings functions"
+        },
+        {
+          "check": "allowed_tables",
+          "passed": true,
+          "detail": "Tables allowed: banks, transactions"
+        },
+        {
+          "check": "no_qualified_names",
+          "passed": true,
+          "detail": "No schema/catalog qualifiers"
+        },
+        {
+          "check": "known_columns",
+          "passed": true,
+          "detail": "All columns exist in the allowed schema"
+        },
+        {
+          "check": "restricted_columns",
+          "passed": true,
+          "detail": "No restricted columns referenced"
+        },
+        {
+          "check": "no_star_on_sensitive_table",
+          "passed": true,
+          "detail": "No wildcard over sensitive tables"
+        },
+        {
+          "check": "join_conditions",
+          "passed": true,
+          "detail": "Every join has a condition"
+        },
+        {
+          "check": "join_count",
+          "passed": true,
+          "detail": "1 join(s)"
+        }
+      ]
+    },
+    {
+      "id": "Q6",
+      "purpose": "Drill-down: daily Payment Success Rate (attempt level) for Nova Bank | UPI",
+      "status": "OK",
+      "rows": 14,
+      "ms": 40.72,
+      "cache_hit": false,
+      "tables": [
+        "banks",
+        "transactions"
+      ],
+      "sql": "SELECT\n    CASE WHEN t.created_at >= TIMESTAMP '2026-11-09 00:00:00' AND t.created_at < TIMESTAMP '2026-11-16 00:00:00' THEN 'current' WHEN t.created_at >= TIMESTAMP '2026-11-02 00:00:00' AND t.created_at < TIMESTAMP '2026-11-09 00:00:00' THEN 'previous' END AS period,\n    CAST(t.created_at AS DATE) AS day,\n    SUM(CASE WHEN t.status = 'SUCCESS' THEN 1 ELSE 0 END) AS numerator,\n    COUNT(*) AS denominator\nFROM transactions AS t\nLEFT JOIN banks AS b ON t.bank_id = b.bank_id\nWHERE t.status IN ('SUCCESS', 'FAILED')\n  AND ((t.created_at >= TIMESTAMP '2026-11-09 00:00:00' AND t.created_at < TIMESTAMP '2026-11-16 00:00:00') OR (t.created_at >= TIMESTAMP '2026-11-02 00:00:00' AND t.created_at < TIMESTAMP '2026-11-09 00:00:00'))\n  AND t.region IN ('North')\n  AND COALESCE(b.bank_name, 'UNKNOWN') IN ('Nova Bank')\n  AND t.payment_method IN ('UPI')\nGROUP BY 1, 2\nORDER BY 1, 2",
+      "executed_sql": "SELECT\n  CASE\n    WHEN t.created_at >= CAST('2026-11-09 00:00:00' AS TIMESTAMP)\n    AND t.created_at < CAST('2026-11-16 00:00:00' AS TIMESTAMP)\n    THEN 'current'\n    WHEN t.created_at >= CAST('2026-11-02 00:00:00' AS TIMESTAMP)\n    AND t.created_at < CAST('2026-11-09 00:00:00' AS TIMESTAMP)\n    THEN 'previous'\n  END AS period,\n  CAST(t.created_at AS DATE) AS day,\n  SUM(CASE WHEN t.status = 'SUCCESS' THEN 1 ELSE 0 END) AS numerator,\n  COUNT(*) AS denominator\nFROM (\n  SELECT\n    *\n  FROM transactions\n  WHERE\n    region = 'North'\n) AS t\nLEFT JOIN banks AS b\n  ON t.bank_id = b.bank_id\nWHERE\n  t.status IN ('SUCCESS', 'FAILED')\n  AND (\n    (\n      t.created_at >= CAST('2026-11-09 00:00:00' AS TIMESTAMP)\n      AND t.created_at < CAST('2026-11-16 00:00:00' AS TIMESTAMP)\n    )\n    OR (\n      t.created_at >= CAST('2026-11-02 00:00:00' AS TIMESTAMP)\n      AND t.created_at < CAST('2026-11-09 00:00:00' AS TIMESTAMP)\n    )\n  )\n  AND t.region IN ('North')\n  AND COALESCE(b.bank_name, 'UNKNOWN') IN ('Nova Bank')\n  AND t.payment_method IN ('UPI')\nGROUP BY\n  1,\n  2\nORDER BY\n  1,\n  2",
+      "checks": [
+        {
+          "check": "parse",
+          "passed": true,
+          "detail": "Parsed with sqlglot (duckdb dialect)"
+        },
+        {
+          "check": "single_statement",
+          "passed": true,
+          "detail": "Exactly one statement required (found 1)"
+        },
+        {
+          "check": "read_only_statement",
+          "passed": true,
+          "detail": "Statement is a SELECT"
+        },
+        {
+          "check": "no_forbidden_commands",
+          "passed": true,
+          "detail": "No DDL/DML/COPY/ATTACH/PRAGMA/INSTALL"
+        },
+        {
+          "check": "no_forbidden_functions",
+          "passed": true,
+          "detail": "No file/system/settings functions"
+        },
+        {
+          "check": "allowed_tables",
+          "passed": true,
+          "detail": "Tables allowed: banks, transactions"
+        },
+        {
+          "check": "no_qualified_names",
+          "passed": true,
+          "detail": "No schema/catalog qualifiers"
+        },
+        {
+          "check": "known_columns",
+          "passed": true,
+          "detail": "All columns exist in the allowed schema"
+        },
+        {
+          "check": "restricted_columns",
+          "passed": true,
+          "detail": "No restricted columns referenced"
+        },
+        {
+          "check": "no_star_on_sensitive_table",
+          "passed": true,
+          "detail": "No wildcard over sensitive tables"
+        },
+        {
+          "check": "join_conditions",
+          "passed": true,
+          "detail": "Every join has a condition"
+        },
+        {
+          "check": "join_count",
+          "passed": true,
+          "detail": "1 join(s)"
+        }
+      ]
+    },
+    {
+      "id": "Q7",
+      "purpose": "Data quality: duplicate transaction ids in raw data",
+      "status": "OK",
+      "rows": 1,
+      "ms": 7.97,
+      "cache_hit": false,
+      "tables": [
+        "transactions_raw"
+      ],
+      "sql": "SELECT COUNT(*) AS duplicate_ids, COALESCE(SUM(c - 1), 0) AS extra_rows\nFROM (SELECT t.txn_id, COUNT(*) AS c FROM transactions_raw AS t WHERE t.created_at >= TIMESTAMP '2026-11-02 00:00:00' AND t.created_at < TIMESTAMP '2026-11-16 00:00:00' GROUP BY t.txn_id HAVING COUNT(*) > 1) AS d",
+      "executed_sql": "SELECT\n  COUNT(*) AS duplicate_ids,\n  COALESCE(SUM(c - 1), 0) AS extra_rows\nFROM (\n  SELECT\n    t.txn_id,\n    COUNT(*) AS c\n  FROM (\n    SELECT\n      *\n    FROM transactions_raw\n    WHERE\n      region = 'North'\n  ) AS t\n  WHERE\n    t.created_at >= CAST('2026-11-02 00:00:00' AS TIMESTAMP)\n    AND t.created_at < CAST('2026-11-16 00:00:00' AS TIMESTAMP)\n  GROUP BY\n    t.txn_id\n  HAVING\n    COUNT(*) > 1\n) AS d",
+      "checks": [
+        {
+          "check": "parse",
+          "passed": true,
+          "detail": "Parsed with sqlglot (duckdb dialect)"
+        },
+        {
+          "check": "single_statement",
+          "passed": true,
+          "detail": "Exactly one statement required (found 1)"
+        },
+        {
+          "check": "read_only_statement",
+          "passed": true,
+          "detail": "Statement is a SELECT"
+        },
+        {
+          "check": "no_forbidden_commands",
+          "passed": true,
+          "detail": "No DDL/DML/COPY/ATTACH/PRAGMA/INSTALL"
+        },
+        {
+          "check": "no_forbidden_functions",
+          "passed": true,
+          "detail": "No file/system/settings functions"
+        },
+        {
+          "check": "allowed_tables",
+          "passed": true,
+          "detail": "Tables allowed: transactions_raw"
+        },
+        {
+          "check": "no_qualified_names",
+          "passed": true,
+          "detail": "No schema/catalog qualifiers"
+        },
+        {
+          "check": "known_columns",
+          "passed": true,
+          "detail": "All columns exist in the allowed schema"
+        },
+        {
+          "check": "restricted_columns",
+          "passed": true,
+          "detail": "No restricted columns referenced"
+        },
+        {
+          "check": "no_star_on_sensitive_table",
+          "passed": true,
+          "detail": "No wildcard over sensitive tables"
+        },
+        {
+          "check": "join_conditions",
+          "passed": true,
+          "detail": "Every join has a condition"
+        },
+        {
+          "check": "join_count",
+          "passed": true,
+          "detail": "0 join(s)"
+        }
+      ]
+    },
+    {
+      "id": "Q8",
+      "purpose": "Data quality: missing bank_id",
+      "status": "OK",
+      "rows": 1,
+      "ms": 24.62,
+      "cache_hit": false,
+      "tables": [
+        "transactions"
+      ],
+      "sql": "SELECT COUNT(*) AS n FROM transactions AS t WHERE t.bank_id IS NULL AND t.created_at >= TIMESTAMP '2026-11-02 00:00:00' AND t.created_at < TIMESTAMP '2026-11-16 00:00:00'",
+      "executed_sql": "SELECT\n  COUNT(*) AS n\nFROM (\n  SELECT\n    *\n  FROM transactions\n  WHERE\n    region = 'North'\n) AS t\nWHERE\n  t.bank_id IS NULL\n  AND t.created_at >= CAST('2026-11-02 00:00:00' AS TIMESTAMP)\n  AND t.created_at < CAST('2026-11-16 00:00:00' AS TIMESTAMP)",
+      "checks": [
+        {
+          "check": "parse",
+          "passed": true,
+          "detail": "Parsed with sqlglot (duckdb dialect)"
+        },
+        {
+          "check": "single_statement",
+          "passed": true,
+          "detail": "Exactly one statement required (found 1)"
+        },
+        {
+          "check": "read_only_statement",
+          "passed": true,
+          "detail": "Statement is a SELECT"
+        },
+        {
+          "check": "no_forbidden_commands",
+          "passed": true,
+          "detail": "No DDL/DML/COPY/ATTACH/PRAGMA/INSTALL"
+        },
+        {
+          "check": "no_forbidden_functions",
+          "passed": true,
+          "detail": "No file/system/settings functions"
+        },
+        {
+          "check": "allowed_tables",
+          "passed": true,
+          "detail": "Tables allowed: transactions"
+        },
+        {
+          "check": "no_qualified_names",
+          "passed": true,
+          "detail": "No schema/catalog qualifiers"
+        },
+        {
+          "check": "known_columns",
+          "passed": true,
+          "detail": "All columns exist in the allowed schema"
+        },
+        {
+          "check": "restricted_columns",
+          "passed": true,
+          "detail": "No restricted columns referenced"
+        },
+        {
+          "check": "no_star_on_sensitive_table",
+          "passed": true,
+          "detail": "No wildcard over sensitive tables"
+        },
+        {
+          "check": "join_conditions",
+          "passed": true,
+          "detail": "Every join has a condition"
+        },
+        {
+          "check": "join_count",
+          "passed": true,
+          "detail": "0 join(s)"
+        }
+      ]
+    },
+    {
+      "id": "Q9",
+      "purpose": "Data quality: bank_id with no matching bank",
+      "status": "OK",
+      "rows": 1,
+      "ms": 23.1,
+      "cache_hit": false,
+      "tables": [
+        "banks",
+        "transactions"
+      ],
+      "sql": "SELECT COUNT(*) AS n FROM transactions AS t LEFT JOIN banks AS b ON t.bank_id = b.bank_id\nWHERE t.bank_id IS NOT NULL AND b.bank_id IS NULL AND t.created_at >= TIMESTAMP '2026-11-02 00:00:00' AND t.created_at < TIMESTAMP '2026-11-16 00:00:00'",
+      "executed_sql": "SELECT\n  COUNT(*) AS n\nFROM (\n  SELECT\n    *\n  FROM transactions\n  WHERE\n    region = 'North'\n) AS t\nLEFT JOIN banks AS b\n  ON t.bank_id = b.bank_id\nWHERE\n  NOT t.bank_id IS NULL\n  AND b.bank_id IS NULL\n  AND t.created_at >= CAST('2026-11-02 00:00:00' AS TIMESTAMP)\n  AND t.created_at < CAST('2026-11-16 00:00:00' AS TIMESTAMP)",
+      "checks": [
+        {
+          "check": "parse",
+          "passed": true,
+          "detail": "Parsed with sqlglot (duckdb dialect)"
+        },
+        {
+          "check": "single_statement",
+          "passed": true,
+          "detail": "Exactly one statement required (found 1)"
+        },
+        {
+          "check": "read_only_statement",
+          "passed": true,
+          "detail": "Statement is a SELECT"
+        },
+        {
+          "check": "no_forbidden_commands",
+          "passed": true,
+          "detail": "No DDL/DML/COPY/ATTACH/PRAGMA/INSTALL"
+        },
+        {
+          "check": "no_forbidden_functions",
+          "passed": true,
+          "detail": "No file/system/settings functions"
+        },
+        {
+          "check": "allowed_tables",
+          "passed": true,
+          "detail": "Tables allowed: banks, transactions"
+        },
+        {
+          "check": "no_qualified_names",
+          "passed": true,
+          "detail": "No schema/catalog qualifiers"
+        },
+        {
+          "check": "known_columns",
+          "passed": true,
+          "detail": "All columns exist in the allowed schema"
+        },
+        {
+          "check": "restricted_columns",
+          "passed": true,
+          "detail": "No restricted columns referenced"
+        },
+        {
+          "check": "no_star_on_sensitive_table",
+          "passed": true,
+          "detail": "No wildcard over sensitive tables"
+        },
+        {
+          "check": "join_conditions",
+          "passed": true,
+          "detail": "Every join has a condition"
+        },
+        {
+          "check": "join_count",
+          "passed": true,
+          "detail": "1 join(s)"
+        }
+      ]
+    },
+    {
+      "id": "Q10",
+      "purpose": "Data quality: invalid status values",
+      "status": "OK",
+      "rows": 4,
+      "ms": 3.58,
+      "cache_hit": false,
+      "tables": [
+        "transactions_raw"
+      ],
+      "sql": "SELECT t.status AS status, COUNT(*) AS n FROM transactions_raw AS t\nWHERE t.status NOT IN ('SUCCESS', 'FAILED', 'PENDING', 'USER_CANCELLED') GROUP BY 1 ORDER BY 2 DESC",
+      "executed_sql": "SELECT\n  t.status AS status,\n  COUNT(*) AS n\nFROM (\n  SELECT\n    *\n  FROM transactions_raw\n  WHERE\n    region = 'North'\n) AS t\nWHERE\n  NOT t.status IN ('SUCCESS', 'FAILED', 'PENDING', 'USER_CANCELLED')\nGROUP BY\n  1\nORDER BY\n  2 DESC",
+      "checks": [
+        {
+          "check": "parse",
+          "passed": true,
+          "detail": "Parsed with sqlglot (duckdb dialect)"
+        },
+        {
+          "check": "single_statement",
+          "passed": true,
+          "detail": "Exactly one statement required (found 1)"
+        },
+        {
+          "check": "read_only_statement",
+          "passed": true,
+          "detail": "Statement is a SELECT"
+        },
+        {
+          "check": "no_forbidden_commands",
+          "passed": true,
+          "detail": "No DDL/DML/COPY/ATTACH/PRAGMA/INSTALL"
+        },
+        {
+          "check": "no_forbidden_functions",
+          "passed": true,
+          "detail": "No file/system/settings functions"
+        },
+        {
+          "check": "allowed_tables",
+          "passed": true,
+          "detail": "Tables allowed: transactions_raw"
+        },
+        {
+          "check": "no_qualified_names",
+          "passed": true,
+          "detail": "No schema/catalog qualifiers"
+        },
+        {
+          "check": "known_columns",
+          "passed": true,
+          "detail": "All columns exist in the allowed schema"
+        },
+        {
+          "check": "restricted_columns",
+          "passed": true,
+          "detail": "No restricted columns referenced"
+        },
+        {
+          "check": "no_star_on_sensitive_table",
+          "passed": true,
+          "detail": "No wildcard over sensitive tables"
+        },
+        {
+          "check": "join_conditions",
+          "passed": true,
+          "detail": "Every join has a condition"
+        },
+        {
+          "check": "join_count",
+          "passed": true,
+          "detail": "0 join(s)"
+        }
+      ]
+    },
+    {
+      "id": "Q11",
+      "purpose": "Data quality: timestamps after data as-of time",
+      "status": "OK",
+      "rows": 1,
+      "ms": 2.51,
+      "cache_hit": false,
+      "tables": [
+        "transactions_raw"
+      ],
+      "sql": "SELECT COUNT(*) AS n FROM transactions_raw AS t WHERE t.created_at > TIMESTAMP '2026-11-16 06:00:00'",
+      "executed_sql": "SELECT\n  COUNT(*) AS n\nFROM (\n  SELECT\n    *\n  FROM transactions_raw\n  WHERE\n    region = 'North'\n) AS t\nWHERE\n  t.created_at > CAST('2026-11-16 06:00:00' AS TIMESTAMP)",
+      "checks": [
+        {
+          "check": "parse",
+          "passed": true,
+          "detail": "Parsed with sqlglot (duckdb dialect)"
+        },
+        {
+          "check": "single_statement",
+          "passed": true,
+          "detail": "Exactly one statement required (found 1)"
+        },
+        {
+          "check": "read_only_statement",
+          "passed": true,
+          "detail": "Statement is a SELECT"
+        },
+        {
+          "check": "no_forbidden_commands",
+          "passed": true,
+          "detail": "No DDL/DML/COPY/ATTACH/PRAGMA/INSTALL"
+        },
+        {
+          "check": "no_forbidden_functions",
+          "passed": true,
+          "detail": "No file/system/settings functions"
+        },
+        {
+          "check": "allowed_tables",
+          "passed": true,
+          "detail": "Tables allowed: transactions_raw"
+        },
+        {
+          "check": "no_qualified_names",
+          "passed": true,
+          "detail": "No schema/catalog qualifiers"
+        },
+        {
+          "check": "known_columns",
+          "passed": true,
+          "detail": "All columns exist in the allowed schema"
+        },
+        {
+          "check": "restricted_columns",
+          "passed": true,
+          "detail": "No restricted columns referenced"
+        },
+        {
+          "check": "no_star_on_sensitive_table",
+          "passed": true,
+          "detail": "No wildcard over sensitive tables"
+        },
+        {
+          "check": "join_conditions",
+          "passed": true,
+          "detail": "Every join has a condition"
+        },
+        {
+          "check": "join_count",
+          "passed": true,
+          "detail": "0 join(s)"
+        }
+      ]
+    },
+    {
+      "id": "Q12",
+      "purpose": "Data quality: Payment Success Rate (attempt level) on transactions_raw (current period)",
+      "status": "OK",
+      "rows": 1,
+      "ms": 5.14,
+      "cache_hit": false,
+      "tables": [
+        "transactions_raw"
+      ],
+      "sql": "SELECT\n    'current' AS period,\n    SUM(CASE WHEN t.status = 'SUCCESS' THEN 1 ELSE 0 END) AS numerator,\n    COUNT(*) AS denominator\nFROM transactions_raw AS t\nWHERE t.status IN ('SUCCESS', 'FAILED')\n  AND ((t.created_at >= TIMESTAMP '2026-11-09 00:00:00' AND t.created_at < TIMESTAMP '2026-11-16 00:00:00'))\n  AND t.region IN ('North')\nGROUP BY 1\nORDER BY 1",
+      "executed_sql": "SELECT\n  'current' AS period,\n  SUM(CASE WHEN t.status = 'SUCCESS' THEN 1 ELSE 0 END) AS numerator,\n  COUNT(*) AS denominator\nFROM (\n  SELECT\n    *\n  FROM transactions_raw\n  WHERE\n    region = 'North'\n) AS t\nWHERE\n  t.status IN ('SUCCESS', 'FAILED')\n  AND (\n    (\n      t.created_at >= CAST('2026-11-09 00:00:00' AS TIMESTAMP)\n      AND t.created_at < CAST('2026-11-16 00:00:00' AS TIMESTAMP)\n    )\n  )\n  AND t.region IN ('North')\nGROUP BY\n  1\nORDER BY\n  1",
+      "checks": [
+        {
+          "check": "parse",
+          "passed": true,
+          "detail": "Parsed with sqlglot (duckdb dialect)"
+        },
+        {
+          "check": "single_statement",
+          "passed": true,
+          "detail": "Exactly one statement required (found 1)"
+        },
+        {
+          "check": "read_only_statement",
+          "passed": true,
+          "detail": "Statement is a SELECT"
+        },
+        {
+          "check": "no_forbidden_commands",
+          "passed": true,
+          "detail": "No DDL/DML/COPY/ATTACH/PRAGMA/INSTALL"
+        },
+        {
+          "check": "no_forbidden_functions",
+          "passed": true,
+          "detail": "No file/system/settings functions"
+        },
+        {
+          "check": "allowed_tables",
+          "passed": true,
+          "detail": "Tables allowed: transactions_raw"
+        },
+        {
+          "check": "no_qualified_names",
+          "passed": true,
+          "detail": "No schema/catalog qualifiers"
+        },
+        {
+          "check": "known_columns",
+          "passed": true,
+          "detail": "All columns exist in the allowed schema"
+        },
+        {
+          "check": "restricted_columns",
+          "passed": true,
+          "detail": "No restricted columns referenced"
+        },
+        {
+          "check": "no_star_on_sensitive_table",
+          "passed": true,
+          "detail": "No wildcard over sensitive tables"
+        },
+        {
+          "check": "join_conditions",
+          "passed": true,
+          "detail": "Every join has a condition"
+        },
+        {
+          "check": "join_count",
+          "passed": true,
+          "detail": "0 join(s)"
+        }
+      ]
+    },
+    {
+      "id": "Q13",
+      "purpose": "Data quality: Payment Success Rate (attempt level) on transactions (current period)",
+      "status": "OK",
+      "rows": 1,
+      "ms": 23.18,
+      "cache_hit": false,
+      "tables": [
+        "transactions"
+      ],
+      "sql": "SELECT\n    'current' AS period,\n    SUM(CASE WHEN t.status = 'SUCCESS' THEN 1 ELSE 0 END) AS numerator,\n    COUNT(*) AS denominator\nFROM transactions AS t\nWHERE t.status IN ('SUCCESS', 'FAILED')\n  AND ((t.created_at >= TIMESTAMP '2026-11-09 00:00:00' AND t.created_at < TIMESTAMP '2026-11-16 00:00:00'))\n  AND t.region IN ('North')\nGROUP BY 1\nORDER BY 1",
+      "executed_sql": "SELECT\n  'current' AS period,\n  SUM(CASE WHEN t.status = 'SUCCESS' THEN 1 ELSE 0 END) AS numerator,\n  COUNT(*) AS denominator\nFROM (\n  SELECT\n    *\n  FROM transactions\n  WHERE\n    region = 'North'\n) AS t\nWHERE\n  t.status IN ('SUCCESS', 'FAILED')\n  AND (\n    (\n      t.created_at >= CAST('2026-11-09 00:00:00' AS TIMESTAMP)\n      AND t.created_at < CAST('2026-11-16 00:00:00' AS TIMESTAMP)\n    )\n  )\n  AND t.region IN ('North')\nGROUP BY\n  1\nORDER BY\n  1",
+      "checks": [
+        {
+          "check": "parse",
+          "passed": true,
+          "detail": "Parsed with sqlglot (duckdb dialect)"
+        },
+        {
+          "check": "single_statement",
+          "passed": true,
+          "detail": "Exactly one statement required (found 1)"
+        },
+        {
+          "check": "read_only_statement",
+          "passed": true,
+          "detail": "Statement is a SELECT"
+        },
+        {
+          "check": "no_forbidden_commands",
+          "passed": true,
+          "detail": "No DDL/DML/COPY/ATTACH/PRAGMA/INSTALL"
+        },
+        {
+          "check": "no_forbidden_functions",
+          "passed": true,
+          "detail": "No file/system/settings functions"
+        },
+        {
+          "check": "allowed_tables",
+          "passed": true,
+          "detail": "Tables allowed: transactions"
+        },
+        {
+          "check": "no_qualified_names",
+          "passed": true,
+          "detail": "No schema/catalog qualifiers"
+        },
+        {
+          "check": "known_columns",
+          "passed": true,
+          "detail": "All columns exist in the allowed schema"
+        },
+        {
+          "check": "restricted_columns",
+          "passed": true,
+          "detail": "No restricted columns referenced"
+        },
+        {
+          "check": "no_star_on_sensitive_table",
+          "passed": true,
+          "detail": "No wildcard over sensitive tables"
+        },
+        {
+          "check": "join_conditions",
+          "passed": true,
+          "detail": "Every join has a condition"
+        },
+        {
+          "check": "join_count",
+          "passed": true,
+          "detail": "0 join(s)"
+        }
+      ]
+    }
+  ],
+  "facts": [
+    {
+      "id": "F1",
+      "text": "Payment Success Rate (attempt level) moved from 90.45% (02 Nov 2026 - 08 Nov 2026, n=9,298) to 87.15% (09 Nov 2026 - 15 Nov 2026, n=9,274): -3.30pp (p < 0.001).",
+      "queries": [
+        "Q3"
+      ]
+    },
+    {
+      "id": "F2",
+      "text": "Decomposition at bank x payment_method level: within-segment rate effect -1.75pp, traffic-mix effect -1.55pp; sum -3.30pp equals the observed change (residual -6.1e-17).",
+      "queries": [
+        "Q3"
+      ]
+    },
+    {
+      "id": "F3",
+      "text": "Counterfactual (previous traffic mix, current segment rates): 88.61% vs 87.15% actual. Measured this way, performance accounts for -1.84pp and mix for -1.47pp; the symmetric split differs only because it shares the interaction term (+0.18pp) equally.",
+      "queries": [
+        "Q3"
+      ]
+    },
+    {
+      "id": "F4",
+      "text": "Zenith Bank: traffic share 12.15% -> 26.19%, success rate 80.44% -> 79.91% (below the 88.80% average); mix contribution -1.21pp.",
+      "queries": [
+        "Q3"
+      ]
+    },
+    {
+      "id": "F5",
+      "text": "Nova Bank | UPI: success rate 90.36% -> 79.64% (-10.71pp, p < 0.001) on 10.28% of current traffic; rate contribution -1.17pp.",
+      "queries": [
+        "Q3"
+      ]
+    },
+    {
+      "id": "F6",
+      "text": "Nova Bank | CARD: success rate 90.73% -> 87.21% (-3.52pp, p = 0.038) on 6.58% of current traffic; rate contribution -0.26pp.",
+      "queries": [
+        "Q3"
+      ]
+    },
+    {
+      "id": "F7",
+      "text": "Nova Bank | UPI failures with reason ISSUER_UNAVAILABLE: 8 -> 132 (7.77% -> 68.04% of the segment's failures).",
+      "queries": [
+        "Q5"
+      ]
+    },
+    {
+      "id": "F8",
+      "text": "Nova Bank | UPI daily success was well below its previous-period level (90.36%) on 11 Nov, 12 Nov, 13 Nov, 14 Nov.",
+      "queries": [
+        "Q6"
+      ]
+    },
+    {
+      "id": "F9",
+      "text": "Raw data gives 85.20% (n=9,486) vs 87.15% (n=9,274) on the trusted view for the current period (-1.95pp); 212 duplicate rows were excluded.",
+      "queries": [
+        "Q12",
+        "Q13"
+      ]
+    },
+    {
+      "id": "F10",
+      "text": "16 Nov is partially loaded (177 attempts vs ~1382/day) and was excluded from relative periods.",
+      "queries": [
+        "Q1"
+      ]
+    }
+  ],
+  "narrative": {
+    "summary": "Payment Success Rate (attempt level) fell 3.30pp (90.45% -> 87.15%). Segment performance explains -1.75pp and traffic mix -1.55pp.",
+    "observed": [
+      "[F1] Payment Success Rate (attempt level) moved from 90.45% (02 Nov 2026 - 08 Nov 2026, n=9,298) to 87.15% (09 Nov 2026 - 15 Nov 2026, n=9,274): -3.30pp (p < 0.001).",
+      "[F2] Decomposition at bank x payment_method level: within-segment rate effect -1.75pp, traffic-mix effect -1.55pp; sum -3.30pp equals the observed change (residual -6.1e-17).",
+      "[F3] Counterfactual (previous traffic mix, current segment rates): 88.61% vs 87.15% actual. Measured this way, performance accounts for -1.84pp and mix for -1.47pp; the symmetric split differs only because it shares the interaction term (+0.18pp) equally.",
+      "[F4] Zenith Bank: traffic share 12.15% -> 26.19%, success rate 80.44% -> 79.91% (below the 88.80% average); mix contribution -1.21pp.",
+      "[F5] Nova Bank | UPI: success rate 90.36% -> 79.64% (-10.71pp, p < 0.001) on 10.28% of current traffic; rate contribution -1.17pp.",
+      "[F6] Nova Bank | CARD: success rate 90.73% -> 87.21% (-3.52pp, p = 0.038) on 6.58% of current traffic; rate contribution -0.26pp.",
+      "[F7] Nova Bank | UPI failures with reason ISSUER_UNAVAILABLE: 8 -> 132 (7.77% -> 68.04% of the segment's failures).",
+      "[F8] Nova Bank | UPI daily success was well below its previous-period level (90.36%) on 11 Nov, 12 Nov, 13 Nov, 14 Nov.",
+      "[F9] Raw data gives 85.20% (n=9,486) vs 87.15% (n=9,274) on the trusted view for the current period (-1.95pp); 212 duplicate rows were excluded.",
+      "[F10] 16 Nov is partially loaded (177 attempts vs ~1382/day) and was excluded from relative periods."
+    ],
+    "hypotheses": [
+      {
+        "text": "The deterioration in Nova Bank | UPI is consistent with an issuer or network availability problem (ISSUER_UNAVAILABLE failures rose concentrated on 11 Nov, 12 Nov, 13 Nov, 14 Nov). Infrastructure telemetry is not available in this dataset to confirm it.",
+        "confidence": "medium",
+        "evidence": [
+          "F5",
+          "F7",
+          "F8"
+        ]
+      },
+      {
+        "text": "Part of the change comes from traffic moving toward Zenith Bank (share 12.15% -> 26.19%), whose success rate is structurally lower but did not itself deteriorate much (80.44% -> 79.91%). A routing change, campaign or merchant onboarding could explain the shift; the data shows the shift, not its cause.",
+        "confidence": "medium",
+        "evidence": [
+          "F2",
+          "F3",
+          "F4"
+        ]
+      }
+    ],
+    "recommendations": [
+      "Check Nova Bank | UPI issuer/switch availability and error logs for 11 Nov, 12 Nov, 13 Nov, 14 Nov; consider failover routing for this segment while it is degraded.",
+      "Review routing rules, campaigns or merchant onboarding that moved traffic to Zenith Bank and quantify the success-rate cost before keeping the change.",
+      "Fix the ingestion replay that creates duplicate transaction rows; report only from the trusted view until then."
+    ],
+    "generated_by": "template",
+    "grounding": {
+      "passed": true,
+      "note": "Template narrative (built directly from computed facts)."
+    }
+  },
+  "confidence": {
+    "level": "Medium",
+    "score": 70,
+    "reasons": [
+      "Question interpreted by the rule-based parser (LLM not used).",
+      "2 ambiguity(ies) resolved with stated assumptions.",
+      "3 data-quality warning(s); affected rows were handled as shown.",
+      "Driver attribution is statistical contribution accounting, not proof of cause."
+    ]
+  },
+  "dq": {
+    "checks": [
+      {
+        "check": "Freshness",
+        "severity": "warning",
+        "count": 177,
+        "detail": "16 Nov has only 177 attempts vs a trailing median of 1382/day - the day is still loading.",
+        "handling": "Excluded: relative periods end on the last complete day (15 Nov).",
+        "query_id": "Q1"
+      },
+      {
+        "check": "Duplicate txn_id",
+        "severity": "warning",
+        "count": 212,
+        "detail": "212 transaction ids appear more than once (212 extra rows) in the analysis window.",
+        "handling": "Trusted view keeps the first ingested copy of each txn_id.",
+        "query_id": "Q7"
+      },
+      {
+        "check": "Missing bank_id",
+        "severity": "warning",
+        "count": 119,
+        "detail": "119 trusted transactions in the window have no bank_id.",
+        "handling": "Kept in totals; shown as bank 'UNKNOWN' in breakdowns.",
+        "query_id": "Q8"
+      },
+      {
+        "check": "Orphan bank_id",
+        "severity": "ok",
+        "count": 0,
+        "detail": "0 transactions reference a bank_id missing from the banks table.",
+        "handling": "Shown as 'UNKNOWN' bank.",
+        "query_id": "Q9"
+      },
+      {
+        "check": "Invalid status",
+        "severity": "info",
+        "count": 5,
+        "detail": "5 raw rows have invalid statuses: 'SUCESS'=2, 'Failed '=1, 'success'=1, 'ERR'=1",
+        "handling": "Excluded by the trusted view.",
+        "query_id": "Q10"
+      },
+      {
+        "check": "Future timestamps",
+        "severity": "info",
+        "count": 8,
+        "detail": "8 raw rows are timestamped after the data as-of time (2026-11-16 06:00:00).",
+        "handling": "Excluded by the trusted view.",
+        "query_id": "Q11"
+      }
+    ],
+    "raw_vs_trusted": {
+      "raw_rate": 0.8519924098671727,
+      "raw_denominator": 9486,
+      "trusted_rate": 0.8714686219538494,
+      "trusted_denominator": 9274,
+      "difference_pp": -1.9476212086676714,
+      "query_ids": [
+        "Q12",
+        "Q13"
+      ]
+    },
+    "warnings": 3,
+    "freshness": {
+      "last_day": "2026-11-16",
+      "last_day_attempts": 177,
+      "trailing_median_attempts": 1382.0,
+      "is_partial": true,
+      "last_complete_day": "2026-11-15",
+      "first_day": "2026-10-19",
+      "query_id": "Q1"
+    }
+  },
+  "trace": [
+    {
+      "step": "Check data freshness",
+      "component": "analytics/data_quality.py::freshness",
+      "detail": "last day 2026-11-16 partial=True; last complete 2026-11-15",
+      "elapsed_ms": 56.8
+    },
+    {
+      "step": "Understand question",
+      "component": "ai/intent_parser.py::parse_question",
+      "detail": "parser=rules; metric=payment_success_rate; analysis=root_cause; dims=[]",
+      "elapsed_ms": 0.2
+    },
+    {
+      "step": "Validate filter values",
+      "component": "core/pipeline.py::_canonical_filters",
+      "detail": "filters={} unknown=[]",
+      "elapsed_ms": 0.0
+    },
+    {
+      "step": "Check access policy",
+      "component": "security/policy.py::check_intent",
+      "detail": "SCOPED ['Results are limited to region = North (your data scope).']",
+      "elapsed_ms": 0.0
+    },
+    {
+      "step": "Resolve time periods",
+      "component": "core/time_resolver.py::resolve_periods",
+      "detail": "current=09 Nov 2026 - 15 Nov 2026 previous=02 Nov 2026 - 08 Nov 2026",
+      "elapsed_ms": 0.1
+    },
+    {
+      "step": "Apply query budget",
+      "component": "core/pipeline.py::_run (limits)",
+      "detail": "days=7, dims=0",
+      "elapsed_ms": 0.0
+    },
+    {
+      "step": "Run analysis: root_cause",
+      "component": "core/pipeline.py::_root_cause",
+      "detail": "6 queries so far",
+      "elapsed_ms": 321.7
+    },
+    {
+      "step": "Data-quality gate",
+      "component": "analytics/data_quality.py::run_checks",
+      "detail": "3 warning(s)",
+      "elapsed_ms": 114.5
+    },
+    {
+      "step": "Build facts",
+      "component": "analytics/insights.py::build_facts",
+      "detail": "10 facts",
+      "elapsed_ms": 0.1
+    },
+    {
+      "step": "Write narrative",
+      "component": "ai/narrator.py::narrate",
+      "detail": "generated_by=template; grounding=True",
+      "elapsed_ms": 0.1
+    },
+    {
+      "step": "Score confidence",
+      "component": "analytics/insights.py::confidence",
+      "detail": "Medium (70)",
+      "elapsed_ms": 0.0
+    }
+  ],
+  "analysis": {
+    "metric_label": "Payment Success Rate (attempt level)",
+    "kind": "ratio",
+    "overall": {
+      "previous": {
+        "value": 0.9044955904495591,
+        "num": 8410,
+        "den": 9298,
+        "ci": [
+          0.8983532828952894,
+          0.9103037899148949
+        ]
+      },
+      "current": {
+        "value": 0.8714686219538494,
+        "num": 8082,
+        "den": 9274,
+        "ci": [
+          0.8645028242910777,
+          0.8781267976675466
+        ]
+      },
+      "delta": -0.03302696849570963,
+      "p_value": 9.605649609056854e-13
+    },
+    "decomposition": {
+      "keys": [
+        "bank",
+        "payment_method"
+      ],
+      "R0": 0.9044955904495591,
+      "R1": 0.8714686219538494,
+      "delta": -0.03302696849570963,
+      "rate_effect": -0.017483065236915767,
+      "mix_effect": -0.015543903258793802,
+      "interaction": 0.001751159598250579,
+      "counterfactual_rate": 0.886136945413518,
+      "cf_rate_effect": -0.01835864503604112,
+      "cf_mix_effect": -0.014668323459668509,
+      "residual": -6.071532165918825e-17,
+      "reconciles": true
+    },
+    "drivers": {
+      "rate": [
+        {
+          "segment": "Nova Bank | UPI",
+          "w0": 0.11486341148634115,
+          "w1": 0.1027604054345482,
+          "r0": 0.903558052434457,
+          "r1": 0.7964323189926548,
+          "rate_change": -0.1071257334418022,
+          "share_change": -0.012103006051792944,
+          "rate_effect": -0.011656555501027378,
+          "mix_effect": 0.00045975592855703666,
+          "contribution": -0.011196799572470342,
+          "p_value": 1.1222578422120932e-11,
+          "significant": true,
+          "n0": 1068,
+          "n1": 953
+        },
+        {
+          "segment": "Nova Bank | CARD",
+          "w0": 0.0812002581200258,
+          "w1": 0.06577528574509381,
+          "r0": 0.9072847682119205,
+          "r1": 0.8721311475409836,
+          "rate_change": -0.03515362067093686,
+          "share_change": -0.015424972374931997,
+          "rate_effect": -0.002583361258469528,
+          "mix_effect": -2.6621214406215148e-05,
+          "contribution": -0.002609982472875743,
+          "p_value": 0.03781827410368632,
+          "significant": true,
+          "n0": 755,
+          "n1": 610
+        },
+        {
+          "segment": "Horizon Bank | UPI",
+          "w0": 0.13820176382017638,
+          "w1": 0.11224929911580764,
+          "r0": 0.933852140077821,
+          "r1": 0.9231508165225745,
+          "rate_change": -0.010701323555246556,
+          "share_change": -0.02595246470436874,
+          "rate_effect": -0.0013400789296166918,
+          "mix_effect": -0.0010515775742293344,
+          "contribution": -0.0023916565038460263,
+          "p_value": 0.3174777406496574,
+          "significant": false,
+          "n0": 1285,
+          "n1": 1041
+        }
+      ],
+      "mix": [
+        {
+          "segment": "Zenith Bank | UPI",
+          "w0": 0.050656055065605506,
+          "w1": 0.116023290920854,
+          "r0": 0.8195329087048833,
+          "r1": 0.8271375464684015,
+          "rate_change": 0.007604637763518274,
+          "share_change": 0.0653672358552485,
+          "rate_effect": 0.0006337680244435789,
+          "mix_effect": -0.004225787761736373,
+          "contribution": -0.0035920197372927938,
+          "p_value": 0.717276200564428,
+          "significant": false,
+          "n0": 471,
+          "n1": 1076
+        },
+        {
+          "segment": "Zenith Bank | CARD",
+          "w0": 0.039040653904065394,
+          "w1": 0.07903817123139961,
+          "r0": 0.7823691460055097,
+          "r1": 0.7871759890859482,
+          "rate_change": 0.00480684308043855,
+          "share_change": 0.03999751732733422,
+          "rate_effect": 0.0002837931917743617,
+          "mix_effect": -0.004128125310738546,
+          "contribution": -0.003844332118964184,
+          "p_value": 0.855199538941098,
+          "significant": false,
+          "n0": 363,
+          "n1": 733
+        },
+        {
+          "segment": "Zenith Bank | NETBANKING",
+          "w0": 0.018175951817595182,
+          "w1": 0.0397886564589174,
+          "r0": 0.7928994082840237,
+          "r1": 0.7479674796747967,
+          "rate_change": -0.04493192860922701,
+          "share_change": 0.02161270464132222,
+          "rate_effect": -0.0013022308204710363,
+          "mix_effect": -0.002540544517592991,
+          "contribution": -0.0038427753380640274,
+          "p_value": 0.25592647176461814,
+          "significant": false,
+          "n0": 169,
+          "n1": 369
+        }
+      ]
+    },
+    "simpson": {
+      "detected": false,
+      "segments_checked": 13,
+      "segments_moving_opposite": 4,
+      "segments_significant_same_direction": 2,
+      "message": "",
+      "level": "bank x payment_method"
+    },
+    "drilldown": {
+      "segment": "Nova Bank | UPI",
+      "filters": {
+        "region": [
+          "North"
+        ],
+        "bank": [
+          "Nova Bank"
+        ],
+        "payment_method": [
+          "UPI"
+        ]
+      },
+      "top_reason": "ISSUER_UNAVAILABLE",
+      "reason_prev": 8,
+      "reason_cur": 132,
+      "reason_share_prev": 0.07766990291262135,
+      "reason_share_cur": 0.6804123711340206,
+      "baseline": 0.903558052434457,
+      "bad_days": [
+        "11 Nov",
+        "12 Nov",
+        "13 Nov",
+        "14 Nov"
+      ],
+      "reason_query_id": "Q5",
+      "daily_query_id": "Q6"
+    },
+    "reconciliation": null,
+    "grain": [
+      "bank",
+      "payment_method"
+    ],
+    "trend_summary": null,
+    "breakdown_top": null,
+    "llm_meta": {},
+    "bank_view": {
+      "rate_effect": -0.01768615143034872,
+      "mix_effect": -0.015340817065360895,
+      "rbar": 0.8879821062017043,
+      "top_mix": {
+        "segment": "Zenith Bank",
+        "w0": 0.12153151215315122,
+        "w1": 0.2619150312702178,
+        "r0": 0.804424778761062,
+        "r1": 0.7990942774804446,
+        "rate_change": -0.005330501280617406,
+        "share_change": 0.1403835191170666,
+        "rate_effect": -0.0010219811453832932,
+        "mix_effect": -0.012104228938349953,
+        "contribution": -0.013126210083733247,
+        "p_value": 0.7109138284887786,
+        "significant": false,
+        "n0": 1130,
+        "n1": 2429
+      },
+      "top_rate": {
+        "segment": "Nova Bank",
+        "w0": 0.25693697569369756,
+        "w1": 0.22169506146215226,
+        "r0": 0.8978652155713688,
+        "r1": 0.8351167315175098,
+        "rate_change": -0.06274848405385902,
+        "share_change": -0.035241914231545296,
+        "rate_effect": -0.015016717375569949,
+        "mix_effect": 0.0007573886538460949,
+        "contribution": -0.014259328721723854,
+        "p_value": 6.450806555591271e-10,
+        "significant": true,
+        "n0": 2389,
+        "n1": 2056
+      }
+    }
+  }
+}
